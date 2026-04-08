@@ -13,7 +13,7 @@
 
 @layer base {
   body {
-    @apply bg-parchment text-ink font-serif;
+    @apply bg-[linear-gradient(180deg,#f5f2ed_0%,#e8e4dc_100%)] text-ink font-serif min-h-screen;
   }
   
   h1, h2, h3, h4, h5, h6 {

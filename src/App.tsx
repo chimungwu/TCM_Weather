@@ -36,10 +36,10 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-parchment/80 backdrop-blur-md border-b border-ink/10">
+      <header className="sticky top-0 z-50 bg-parchment/90 backdrop-blur-xl border-b border-ink/5 shadow-sm shadow-ink/5">
         <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="bg-ink text-parchment p-2 rounded-lg">
+            <div className="bg-ink text-parchment p-2 rounded-xl">
               <Scroll size={24} />
             </div>
             <div>

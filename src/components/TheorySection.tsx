@@ -25,7 +25,7 @@ export default function TheorySection() {
         >
           學術導引 · Theory Guide
         </motion.div>
-        <h2 className="text-4xl font-bold mb-6">探索「五運六氣」的奧秘</h2>
+        <h2 className="text-3xl leading-snug font-bold mb-6">探索「五運六氣」的奧秘</h2>
         <p className="text-lg leading-relaxed font-sans text-ink/70">
           五運六氣（簡稱「運氣」）是中醫預測氣候與疾病的核心理論。它將宇宙大氣的「能量屬性」與「氣候特徵」結合，揭示天人合一的律動。
         </p>
@@ -74,36 +74,42 @@ export default function TheorySection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-parchment/50 p-8 rounded-3xl border border-ink/5 shadow-sm hover:shadow-md transition-shadow">
+          <div className="bg-parchment p-8 rounded-3xl border border-ink/10 shadow-sm">
             <div className="w-12 h-12 bg-cinnabar/10 text-cinnabar rounded-2xl flex items-center justify-center mb-6">
               <Zap size={24} />
             </div>
             <h4 className="text-xl font-bold mb-4">大運 (中運)</h4>
-            <p className="text-base text-ink/70 font-sans leading-relaxed mb-6">
-              決定一整年的總基調。根據天干定，分為<strong>「太過」</strong>（能量強）與<strong>「不及」</strong>（能量弱）。
+            <p className="text-sm text-ink/80 font-sans leading-relaxed mb-6">
+              <strong>推算：</strong>依據天干（甲己土、乙庚金、丙辛水、丁壬木、戊癸火）。<br/>
+              <strong>氣候：</strong>決定年度總能量屬性（太過/不及）。<br/>
+              <strong>影響：</strong>影響對應臟腑（肝、心、脾、肺、腎）的強弱。
             </p>
-            <div className="p-4 bg-parchment rounded-xl text-sm font-sans text-ink/60 italic border border-ink/5">
-              例：甲年為土運太過，濕氣重；乙年為金運不及，燥氣化火。
+            <div className="p-4 bg-parchment border border-ink/10 rounded-xl text-xs font-sans text-ink/70 italic">
+              例：甲年土運太過，濕氣重，易傷脾胃。
             </div>
           </div>
 
-          <div className="bg-parchment/50 p-8 rounded-3xl border border-ink/5 shadow-sm hover:shadow-md transition-shadow">
+          <div className="bg-parchment p-8 rounded-3xl border border-ink/10 shadow-sm">
             <div className="w-12 h-12 bg-jade/10 text-jade rounded-2xl flex items-center justify-center mb-6">
               <Activity size={24} />
             </div>
             <h4 className="text-xl font-bold mb-4">主運</h4>
-            <p className="text-base text-ink/70 font-sans leading-relaxed">
-              每年固定、像四季一樣的規律。分為五步：木、火、土、金、水。每一步管 73 天又 5 刻，每年循環不變。
+            <p className="text-sm text-ink/80 font-sans leading-relaxed">
+              <strong>推算：</strong>每年固定，依五行相生（木火土金水）。<br/>
+              <strong>氣候：</strong>反映季節性氣候變化。<br/>
+              <strong>影響：</strong>人體隨四季更迭的生理適應。
             </p>
           </div>
 
-          <div className="bg-parchment/50 p-8 rounded-3xl border border-ink/5 shadow-sm hover:shadow-md transition-shadow">
+          <div className="bg-parchment p-8 rounded-3xl border border-ink/10 shadow-sm">
             <div className="w-12 h-12 bg-blue-500/10 text-blue-500 rounded-2xl flex items-center justify-center mb-6">
               <Compass size={24} />
             </div>
             <h4 className="text-xl font-bold mb-4">客運</h4>
-            <p className="text-base text-ink/70 font-sans leading-relaxed">
-              每年「外加」的變動能量。同樣分為五步，但每年的起點（初運）會隨著大運而改變，體現年度差異。
+            <p className="text-sm text-ink/80 font-sans leading-relaxed">
+              <strong>推算：</strong>依大運起點，隨年度變動。<br/>
+              <strong>氣候：</strong>反映年度差異的變動能量。<br/>
+              <strong>影響：</strong>人體對年度異常氣候的反應。
             </p>
           </div>
         </div>
@@ -119,12 +125,14 @@ export default function TheorySection() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="bg-parchment/50 p-8 rounded-3xl border border-ink/5 shadow-sm">
+          <div className="bg-parchment p-8 rounded-3xl border border-ink/10 shadow-sm">
             <h4 className="text-xl font-bold mb-6 flex items-center gap-2 text-ink">
               <Sun className="text-cinnabar" /> 主氣 (地表規律)
             </h4>
-            <p className="text-base text-ink/70 font-sans mb-8">
-              每年的固定節氣規律，反映地表氣候。分為六步，每步管 60 天又 87.5 刻：
+            <p className="text-sm text-ink/80 font-sans mb-8">
+              <strong>推算：</strong>每年固定，依節氣劃分。<br/>
+              <strong>氣候：</strong>反映地表氣候規律。<br/>
+              <strong>影響：</strong>人體隨節氣變化的生理節律。
             </p>
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
@@ -157,12 +165,14 @@ export default function TheorySection() {
             </div>
           </div>
 
-          <div className="bg-parchment/50 p-8 rounded-3xl border border-ink/5 shadow-sm">
+          <div className="bg-parchment p-8 rounded-3xl border border-ink/10 shadow-sm">
             <h4 className="text-xl font-bold mb-6 flex items-center gap-2 text-blue-600">
               <Wind /> 客氣 (天上降臨)
             </h4>
-            <p className="text-base text-ink/70 font-sans mb-8">
-              每年「從天上降下來」的變動氣候，是運氣推算中最關鍵的動態資料。
+            <p className="text-sm text-ink/80 font-sans mb-8">
+              <strong>推算：</strong>依地支（司天/在泉）。<br/>
+              <strong>氣候：</strong>年度變動氣候（風寒暑濕燥火）。<br/>
+              <strong>影響：</strong>導致特定經絡、臟腑易受特定病邪侵襲。
             </p>
             <div className="space-y-6">
               <div className="flex gap-4 items-start">
@@ -197,17 +207,17 @@ export default function TheorySection() {
               <Zap size={20} /> 氣同化 (加成效果)
             </h4>
             <div className="space-y-6">
-              <div className="bg-parchment/50 p-5 rounded-2xl shadow-sm border border-amber-200/50">
-                <div className="font-bold text-amber-700 mb-2 text-sm">天符</div>
-                <p className="text-sm text-ink/60 font-sans leading-relaxed">大運五行 = 司天五行。此年病氣較「暴」，變化劇烈。</p>
+              <div className="bg-parchment p-5 rounded-2xl shadow-sm border border-amber-200">
+                <div className="font-bold text-amber-800 mb-2 text-sm">天符</div>
+                <p className="text-sm text-ink/80 font-sans leading-relaxed">大運五行 = 司天五行。此年病氣較「暴」，變化劇烈。</p>
               </div>
-              <div className="bg-parchment/50 p-5 rounded-2xl shadow-sm border border-amber-200/50">
-                <div className="font-bold text-amber-700 mb-2 text-sm">歲會</div>
-                <p className="text-sm text-ink/60 font-sans leading-relaxed">大運五行 = 歲支方位。此年氣候相對平穩。</p>
+              <div className="bg-parchment p-5 rounded-2xl shadow-sm border border-amber-200">
+                <div className="font-bold text-amber-800 mb-2 text-sm">歲會</div>
+                <p className="text-sm text-ink/80 font-sans leading-relaxed">大運五行 = 歲支方位。此年氣候相對平穩。</p>
               </div>
-              <div className="bg-parchment/50 p-5 rounded-2xl shadow-sm border border-amber-200/50">
-                <div className="font-bold text-amber-700 mb-2 text-sm">同天符 / 同歲會</div>
-                <p className="text-sm text-ink/60 font-sans leading-relaxed">大運與在泉的五行相符，加強下半年的能量特徵。</p>
+              <div className="bg-parchment p-5 rounded-2xl shadow-sm border border-amber-200">
+                <div className="font-bold text-amber-800 mb-2 text-sm">同天符 / 同歲會</div>
+                <p className="text-sm text-ink/80 font-sans leading-relaxed">大運與在泉的五行相符，加強下半年的能量特徵。</p>
               </div>
             </div>
           </div>
@@ -217,34 +227,61 @@ export default function TheorySection() {
               <ShieldAlert size={20} /> 運氣生剋 (病機輕重)
             </h4>
             <div className="space-y-4">
-              <div className="flex items-start gap-4 p-5 bg-parchment/50 rounded-2xl shadow-sm border border-blue-100">
+              <div className="flex items-start gap-4 p-5 bg-parchment rounded-2xl shadow-sm border border-blue-200">
                 <div className="px-3 py-1 bg-jade/10 text-jade text-xs font-bold rounded-full">順化</div>
                 <div>
-                  <div className="font-bold text-base">氣生運 (天氣助身體)</div>
-                  <p className="text-sm text-ink/50 font-sans mt-1">病勢通常較輕，易於康復。</p>
+                  <div className="font-bold text-base text-ink">氣生運 (天氣助身體)</div>
+                  <p className="text-sm text-ink/80 font-sans mt-1">病勢通常較輕，易於康復。</p>
                 </div>
               </div>
-              <div className="flex items-start gap-4 p-5 bg-parchment/50 rounded-2xl shadow-sm border border-blue-100">
+              <div className="flex items-start gap-4 p-5 bg-parchment rounded-2xl shadow-sm border border-blue-200">
                 <div className="px-3 py-1 bg-cinnabar/10 text-cinnabar text-xs font-bold rounded-full">天刑</div>
                 <div>
-                  <div className="font-bold text-base">氣剋運 (氣候壓制運)</div>
-                  <p className="text-sm text-ink/50 font-sans mt-1">病勢通常較重，需嚴加防範。</p>
+                  <div className="font-bold text-base text-ink">氣剋運 (氣候壓制運)</div>
+                  <p className="text-sm text-ink/80 font-sans mt-1">病勢通常較重，需嚴加防範。</p>
                 </div>
               </div>
-              <div className="flex items-start gap-4 p-5 bg-parchment/50 rounded-2xl shadow-sm border border-blue-100">
-                <div className="px-3 py-1 bg-amber-500/10 text-amber-500 text-xs font-bold rounded-full">小逆</div>
+              <div className="flex items-start gap-4 p-5 bg-parchment rounded-2xl shadow-sm border border-blue-200">
+                <div className="px-3 py-1 bg-amber-500/10 text-amber-600 text-xs font-bold rounded-full">小逆</div>
                 <div>
-                  <div className="font-bold text-base">運生氣 (能量外洩)</div>
-                  <p className="text-sm text-ink/50 font-sans mt-1">稍微不順，氣候與人體節律略有偏差。</p>
+                  <div className="font-bold text-base text-ink">運生氣 (能量外洩)</div>
+                  <p className="text-sm text-ink/80 font-sans mt-1">稍微不順，氣候與人體節律略有偏差。</p>
                 </div>
               </div>
-              <div className="flex items-start gap-4 p-5 bg-parchment/50 rounded-2xl shadow-sm border border-blue-100">
+              <div className="flex items-start gap-4 p-5 bg-parchment rounded-2xl shadow-sm border border-blue-200">
                 <div className="px-3 py-1 bg-ink/10 text-ink text-xs font-bold rounded-full">不和</div>
                 <div>
-                  <div className="font-bold text-base">運剋氣 (運氣相搏)</div>
-                  <p className="text-sm text-ink/50 font-sans mt-1">氣候與運勢衝突，容易出現反常現象。</p>
+                  <div className="font-bold text-base text-ink">運剋氣 (運氣相搏)</div>
+                  <p className="text-sm text-ink/80 font-sans mt-1">氣候與運勢衝突，容易出現反常現象。</p>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Subsection: Case Studies */}
+      <section className="space-y-8">
+        <div className="bg-parchment p-8 rounded-3xl border border-ink/20 shadow-sm">
+          <h4 className="text-xl font-bold mb-6 text-ink flex items-center gap-2">
+            <Book size={20} /> 案例分析：運氣組合如何影響當年
+          </h4>
+          <div className="space-y-6 font-sans">
+            <div className="p-6 bg-parchment rounded-2xl border border-ink/10">
+              <h5 className="font-bold text-lg text-cinnabar mb-2">案例一：天符年 (如戊午年)</h5>
+              <p className="text-sm text-ink/80 leading-relaxed">
+                <strong>組合：</strong>大運（火）與司天（火）五行相同。<br/>
+                <strong>氣候：</strong>當年火氣極盛，氣候異常炎熱。<br/>
+                <strong>疾病：</strong>易流行心火相關疾病（如心悸、失眠、瘡瘍），病勢發展迅速且猛烈。
+              </p>
+            </div>
+            <div className="p-6 bg-parchment rounded-2xl border border-ink/10">
+              <h5 className="font-bold text-lg text-jade mb-2">案例二：歲會年 (如丁卯年)</h5>
+              <p className="text-sm text-ink/80 leading-relaxed">
+                <strong>組合：</strong>大運（木）與歲支（卯木）方位五行相符。<br/>
+                <strong>氣候：</strong>氣候相對平穩，能量運作順暢。<br/>
+                <strong>疾病：</strong>疾病多為常規性，病勢較為緩和，治療效果通常較好。
+              </p>
             </div>
           </div>
         </div>
@@ -260,21 +297,21 @@ export default function TheorySection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-parchment/50 p-8 rounded-3xl border border-cinnabar/5 shadow-sm">
+          <div className="bg-parchment p-8 rounded-3xl border border-cinnabar/20 shadow-sm">
             <h4 className="text-xl font-bold mb-4 text-cinnabar flex items-center gap-2">
               <ShieldAlert size={20} /> 五鬱之發 (鬱極宜發)
             </h4>
-            <p className="text-sm text-ink/70 font-sans leading-relaxed mb-6">
+            <p className="text-sm text-ink/80 font-sans leading-relaxed mb-6">
               當運氣受到壓制（如運被氣剋），能量會積聚。當壓制力減弱時，積聚的能量會「暴發」。
               核心治則：<strong>「鬱極宜發不宜鬱」</strong>。依據五行特性，採取達、發、奪、泄、折等不同疏通手法。
             </p>
           </div>
 
-          <div className="bg-parchment/50 p-8 rounded-3xl border border-amber-100 shadow-sm">
-            <h4 className="text-xl font-bold mb-4 text-amber-700 flex items-center gap-2">
+          <div className="bg-parchment p-8 rounded-3xl border border-amber-200 shadow-sm">
+            <h4 className="text-xl font-bold mb-4 text-amber-800 flex items-center gap-2">
               <Activity size={20} /> 勝復提醒 (動態平衡)
             </h4>
-            <p className="text-sm text-ink/70 font-sans leading-relaxed mb-6">
+            <p className="text-sm text-ink/80 font-sans leading-relaxed mb-6">
               大自然的「報復機制」。若上半年（司天）氣候過於強盛（勝氣），下半年必會誘發對應的「復氣」進行報復性反彈。
               臨床提示：<strong>「開藥留有一線」</strong>，預防氣候劇烈切換導致的人體負擔。
             </p>
@@ -284,10 +321,18 @@ export default function TheorySection() {
 
       {/* Summary Callout */}
       <section className="bg-parchment p-10 rounded-[3rem] border-2 border-dashed border-ink/10 text-center">
-        <h3 className="text-2xl font-bold mb-4">為什麼要學五運六氣？</h3>
-        <p className="max-w-2xl mx-auto text-ink/60 font-sans leading-relaxed">
-          掌握了運氣規律，醫者便能「先歲氣而後天時」，在疾病發生前預判趨勢，在診斷時洞察病機。這不僅是氣候學，更是中醫精準醫療的基石。
-        </p>
+        <h3 className="text-2xl font-bold mb-6">為什麼要學五運六氣？</h3>
+        <div className="max-w-3xl mx-auto text-ink/70 font-sans leading-relaxed space-y-6 text-left">
+          <p>
+            「五運六氣」起源於《黃帝內經》，原書中雖提及，但體系散見。真正將其系統化並補入《黃帝內經》的關鍵人物，是唐代的醫學家<strong>王冰</strong>。他將這套理論納入《素問》之中，使其成為中醫理論體系中不可或缺的一環。
+          </p>
+          <p>
+            然而，這套理論在歷史與現代學術界中始終存在爭議。批評者認為其推算過於機械，難以完全對應複雜多變的現代氣候；支持者則認為其揭示了天地能量與人體節律的深層共振。
+          </p>
+          <p>
+            即便如此，學習五運六氣仍具備深遠的指導意義。它不僅是古老的氣候學，更是一種<strong>「時序醫學」</strong>的思維訓練。掌握了運氣規律，醫者便能「先歲氣而後天時」，在疾病發生前預判趨勢，在診斷時洞察病機。這不僅是氣候的推演，更是中醫追求「因時制宜」、實現精準醫療的重要基石。
+          </p>
+        </div>
       </section>
     </div>
   );
