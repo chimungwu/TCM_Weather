@@ -148,6 +148,18 @@ export default function AboutAuthor() {
             </p>
           </div>
         </section>
+
+        {/* Copyright & License */}
+        <section className="md:col-span-2 bg-parchment p-8 rounded-3xl border border-ink/10 text-center space-y-4">
+          <h3 className="text-xl font-bold text-ink">版權與授權 (Copyright & License)</h3>
+          <p className="text-sm text-ink/70 font-sans">
+            © 2026 吳啓銘醫師. All rights reserved.
+          </p>
+          <p className="text-sm text-ink/70 font-sans max-w-2xl mx-auto">
+            本網站內容採用「創用 CC 姓名標示-非商業性 4.0 國際授權條款」(CC BY-NC 4.0) 授權。
+            您可以自由分享、重製本網站內容，但必須標示作者姓名，且不得用於商業目的。
+          </p>
+        </section>
       </div>
     </div>
   );

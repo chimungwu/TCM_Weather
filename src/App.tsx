@@ -136,7 +136,7 @@ export default function App() {
             <Scroll size={40} className="opacity-20" />
           </div>
           <p className="font-sans text-base mb-2">岐黃運氣學堂：阿銘醫師的五運六氣研究筆記</p>
-          <p className="font-sans text-xs uppercase tracking-widest opacity-60">© 2026 Traditional Chinese Medicine Research Institute</p>
+          <p className="font-sans text-xs uppercase tracking-widest opacity-60">© 2026 吳啓銘醫師. All rights reserved.</p>
         </div>
       </footer>
     </div>
