@@ -31,6 +31,39 @@ export default function TheorySection() {
         </p>
       </section>
 
+      {/* New Section: Core Logic */}
+      <section className="bg-parchment text-ink p-10 rounded-[3rem] shadow-xl border border-ink/5">
+        <h3 className="text-2xl font-bold mb-8 flex items-center gap-3">
+          <Book size={28} />
+          核心邏輯：天人合一的動態平衡
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 font-sans mb-10">
+          <div className="space-y-4">
+            <h4 className="font-bold text-lg text-cinnabar">1. 氣候的週期性</h4>
+            <p className="text-base text-ink/80 leading-relaxed">
+              運氣學說認為，宇宙能量並非雜亂無章，而是遵循天干地支的規律，呈現出五年一小循環、六十年一大循環的週期性變化。
+            </p>
+          </div>
+          <div className="space-y-4">
+            <h4 className="font-bold text-lg text-jade">2. 運與氣的互動</h4>
+            <p className="text-base text-ink/80 leading-relaxed">
+              「運」是主導能量的「勢」，「氣」是表現氣候的「象」。兩者交織，決定了當年的氣候是偏熱、偏寒、偏濕或偏燥。
+            </p>
+          </div>
+          <div className="space-y-4">
+            <h4 className="font-bold text-lg text-blue-600">3. 臨床的預判性</h4>
+            <p className="text-base text-ink/80 leading-relaxed">
+              透過掌握運氣，醫者能預判當年容易流行的疾病類型，提前進行體質調理，實現「治未病」的最高境界。
+            </p>
+          </div>
+        </div>
+        <div className="text-center pt-6 border-t border-ink/10">
+          <p className="text-sm text-ink/60 italic">
+            註：五運六氣理論雖在學術界存在爭議，但其作為一種時序醫學的探索，對於理解氣候與疾病關聯仍具備重要的臨床指導意義。
+          </p>
+        </div>
+      </section>
+
       {/* Section 1: Five Movements */}
       <section className="space-y-8">
         <div className="flex items-center gap-4 border-l-4 border-cinnabar pl-6">
@@ -41,7 +74,7 @@ export default function TheorySection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white p-8 rounded-3xl border border-ink/10 shadow-sm hover:shadow-md transition-shadow">
+          <div className="bg-parchment/50 p-8 rounded-3xl border border-ink/5 shadow-sm hover:shadow-md transition-shadow">
             <div className="w-12 h-12 bg-cinnabar/10 text-cinnabar rounded-2xl flex items-center justify-center mb-6">
               <Zap size={24} />
             </div>
@@ -54,7 +87,7 @@ export default function TheorySection() {
             </div>
           </div>
 
-          <div className="bg-white p-8 rounded-3xl border border-ink/10 shadow-sm hover:shadow-md transition-shadow">
+          <div className="bg-parchment/50 p-8 rounded-3xl border border-ink/5 shadow-sm hover:shadow-md transition-shadow">
             <div className="w-12 h-12 bg-jade/10 text-jade rounded-2xl flex items-center justify-center mb-6">
               <Activity size={24} />
             </div>
@@ -64,7 +97,7 @@ export default function TheorySection() {
             </p>
           </div>
 
-          <div className="bg-white p-8 rounded-3xl border border-ink/10 shadow-sm hover:shadow-md transition-shadow">
+          <div className="bg-parchment/50 p-8 rounded-3xl border border-ink/5 shadow-sm hover:shadow-md transition-shadow">
             <div className="w-12 h-12 bg-blue-500/10 text-blue-500 rounded-2xl flex items-center justify-center mb-6">
               <Compass size={24} />
             </div>
@@ -86,7 +119,7 @@ export default function TheorySection() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="bg-white p-8 rounded-3xl border border-ink/10 shadow-sm">
+          <div className="bg-parchment/50 p-8 rounded-3xl border border-ink/5 shadow-sm">
             <h4 className="text-xl font-bold mb-6 flex items-center gap-2 text-ink">
               <Sun className="text-cinnabar" /> 主氣 (地表規律)
             </h4>
@@ -124,7 +157,7 @@ export default function TheorySection() {
             </div>
           </div>
 
-          <div className="bg-white p-8 rounded-3xl border border-ink/10 shadow-sm">
+          <div className="bg-parchment/50 p-8 rounded-3xl border border-ink/5 shadow-sm">
             <h4 className="text-xl font-bold mb-6 flex items-center gap-2 text-blue-600">
               <Wind /> 客氣 (天上降臨)
             </h4>
@@ -164,15 +197,15 @@ export default function TheorySection() {
               <Zap size={20} /> 氣同化 (加成效果)
             </h4>
             <div className="space-y-6">
-              <div className="bg-white p-5 rounded-2xl shadow-sm border border-amber-200/50">
+              <div className="bg-parchment/50 p-5 rounded-2xl shadow-sm border border-amber-200/50">
                 <div className="font-bold text-amber-700 mb-2 text-sm">天符</div>
                 <p className="text-sm text-ink/60 font-sans leading-relaxed">大運五行 = 司天五行。此年病氣較「暴」，變化劇烈。</p>
               </div>
-              <div className="bg-white p-5 rounded-2xl shadow-sm border border-amber-200/50">
+              <div className="bg-parchment/50 p-5 rounded-2xl shadow-sm border border-amber-200/50">
                 <div className="font-bold text-amber-700 mb-2 text-sm">歲會</div>
                 <p className="text-sm text-ink/60 font-sans leading-relaxed">大運五行 = 歲支方位。此年氣候相對平穩。</p>
               </div>
-              <div className="bg-white p-5 rounded-2xl shadow-sm border border-amber-200/50">
+              <div className="bg-parchment/50 p-5 rounded-2xl shadow-sm border border-amber-200/50">
                 <div className="font-bold text-amber-700 mb-2 text-sm">同天符 / 同歲會</div>
                 <p className="text-sm text-ink/60 font-sans leading-relaxed">大運與在泉的五行相符，加強下半年的能量特徵。</p>
               </div>
@@ -184,28 +217,28 @@ export default function TheorySection() {
               <ShieldAlert size={20} /> 運氣生剋 (病機輕重)
             </h4>
             <div className="space-y-4">
-              <div className="flex items-start gap-4 p-5 bg-white rounded-2xl shadow-sm border border-blue-100">
+              <div className="flex items-start gap-4 p-5 bg-parchment/50 rounded-2xl shadow-sm border border-blue-100">
                 <div className="px-3 py-1 bg-jade/10 text-jade text-xs font-bold rounded-full">順化</div>
                 <div>
                   <div className="font-bold text-base">氣生運 (天氣助身體)</div>
                   <p className="text-sm text-ink/50 font-sans mt-1">病勢通常較輕，易於康復。</p>
                 </div>
               </div>
-              <div className="flex items-start gap-4 p-5 bg-white rounded-2xl shadow-sm border border-blue-100">
+              <div className="flex items-start gap-4 p-5 bg-parchment/50 rounded-2xl shadow-sm border border-blue-100">
                 <div className="px-3 py-1 bg-cinnabar/10 text-cinnabar text-xs font-bold rounded-full">天刑</div>
                 <div>
                   <div className="font-bold text-base">氣剋運 (氣候壓制運)</div>
                   <p className="text-sm text-ink/50 font-sans mt-1">病勢通常較重，需嚴加防範。</p>
                 </div>
               </div>
-              <div className="flex items-start gap-4 p-5 bg-white rounded-2xl shadow-sm border border-blue-100">
+              <div className="flex items-start gap-4 p-5 bg-parchment/50 rounded-2xl shadow-sm border border-blue-100">
                 <div className="px-3 py-1 bg-amber-500/10 text-amber-500 text-xs font-bold rounded-full">小逆</div>
                 <div>
                   <div className="font-bold text-base">運生氣 (能量外洩)</div>
                   <p className="text-sm text-ink/50 font-sans mt-1">稍微不順，氣候與人體節律略有偏差。</p>
                 </div>
               </div>
-              <div className="flex items-start gap-4 p-5 bg-white rounded-2xl shadow-sm border border-blue-100">
+              <div className="flex items-start gap-4 p-5 bg-parchment/50 rounded-2xl shadow-sm border border-blue-100">
                 <div className="px-3 py-1 bg-ink/10 text-ink text-xs font-bold rounded-full">不和</div>
                 <div>
                   <div className="font-bold text-base">運剋氣 (運氣相搏)</div>
@@ -213,6 +246,38 @@ export default function TheorySection() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 4: Advanced Warnings */}
+      <section className="space-y-8">
+        <div className="flex items-center gap-4 border-l-4 border-cinnabar pl-6">
+          <div>
+            <h3 className="text-2xl font-bold">四、 進階預警：五鬱與勝復</h3>
+            <p className="text-ink/50 font-sans">當運氣失衡時，大自然自我調節的報復性機制</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="bg-parchment/50 p-8 rounded-3xl border border-cinnabar/5 shadow-sm">
+            <h4 className="text-xl font-bold mb-4 text-cinnabar flex items-center gap-2">
+              <ShieldAlert size={20} /> 五鬱之發 (鬱極宜發)
+            </h4>
+            <p className="text-sm text-ink/70 font-sans leading-relaxed mb-6">
+              當運氣受到壓制（如運被氣剋），能量會積聚。當壓制力減弱時，積聚的能量會「暴發」。
+              核心治則：<strong>「鬱極宜發不宜鬱」</strong>。依據五行特性，採取達、發、奪、泄、折等不同疏通手法。
+            </p>
+          </div>
+
+          <div className="bg-parchment/50 p-8 rounded-3xl border border-amber-100 shadow-sm">
+            <h4 className="text-xl font-bold mb-4 text-amber-700 flex items-center gap-2">
+              <Activity size={20} /> 勝復提醒 (動態平衡)
+            </h4>
+            <p className="text-sm text-ink/70 font-sans leading-relaxed mb-6">
+              大自然的「報復機制」。若上半年（司天）氣候過於強盛（勝氣），下半年必會誘發對應的「復氣」進行報復性反彈。
+              臨床提示：<strong>「開藥留有一線」</strong>，預防氣候劇烈切換導致的人體負擔。
+            </p>
           </div>
         </div>
       </section>
