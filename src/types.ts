@@ -257,7 +257,7 @@ export const getMovementSteps = (daYun: string, isExcess: boolean) => {
   return { mainSteps: mainStepsData, guestSteps, applications };
 };
 
-export const getYunQiStrength = (daYun: string, siTian: string) => {
+export const getYunQiStrength = (daYun: string, siTian: string, zaiQuan: string) => {
   const elements: Record<string, string> = {
     '厥陰風木': '木', '少陰君火': '火', '少陽相火': '火',
     '太陰濕土': '土', '陽明燥金': '金', '太陽寒水': '水'
@@ -266,13 +266,25 @@ export const getYunQiStrength = (daYun: string, siTian: string) => {
   const genMap: Record<string, string> = { '木': '火', '火': '土', '土': '金', '金': '水', '水': '木' };
   const overcomeMap: Record<string, string> = { '木': '土', '土': '水', '水': '火', '火': '金', '金': '木' };
 
+  const getTrendText = (qi: string, isFirstHalf: boolean) => {
+    const period = isFirstHalf ? "上半年 (司天)" : "下半年 (在泉)";
+    if (qi.includes('火')) return `${period}受火氣主導，氣候偏熱，需防暑熱、火淫之疾，宜清熱降火。`;
+    if (qi.includes('水')) return `${period}受水氣主導，氣候偏寒，需防寒濕、水淫之疾，宜溫陽散寒。`;
+    if (qi.includes('木')) return `${period}受木氣主導，風氣流行，需防風淫、肝木乘土，宜疏肝理脾。`;
+    if (qi.includes('金')) return `${period}受金氣主導，氣候偏燥，需防燥淫、燥邪傷肺，宜潤燥滋陰。`;
+    if (qi.includes('土')) return `${period}受土氣主導，濕氣瀰漫，需防濕淫、濕困脾土，宜苦燥化濕。`;
+    return "";
+  };
+
+  const trend = `${getTrendText(siTian, true)} ${getTrendText(zaiQuan, false)} 醫者應參考「客主加臨」之微調，靈活處方。`;
+
   if (genMap[daYun] === qiEl || overcomeMap[daYun] === qiEl) {
-    return { type: '運盛氣衰', detail: '運生氣或運克氣，年度運勢主導。' };
+    return { type: '運盛氣衰', detail: '運生氣或運克氣，年度運勢主導。', trend };
   }
   if (genMap[qiEl] === daYun || overcomeMap[qiEl] === daYun) {
-    return { type: '氣盛運衰', detail: '氣生運或氣克運，司天之氣主導。' };
+    return { type: '氣盛運衰', detail: '氣生運或氣克運，司天之氣主導。', trend };
   }
-  return { type: '運氣平穩', detail: '運氣相合，氣候較為平和。' };
+  return { type: '運氣平穩', detail: '運氣相合，氣候較為平和。', trend };
 };
 
 export const getCombinationType = (stem: string, branch: string, daYun: string, siTian: string, zaiQuan: string) => {

@@ -47,7 +47,7 @@ export default function CalculationTool() {
   const sanYinFang = getSanYinFangGuidance(sb.stem, daYunInfo.isExcess);
   const combinations = getCombinationType(sb.stem, sb.branch, daYunInfo.movement, stzq.siTian, stzq.zaiQuan);
   const movementSteps = getMovementSteps(daYunInfo.movement, daYunInfo.isExcess);
-  const strength = getYunQiStrength(daYunInfo.movement, stzq.siTian);
+  const strength = getYunQiStrength(daYunInfo.movement, stzq.siTian, stzq.zaiQuan);
 
   const getClinicalAdvice = (zhu: string, ke: string) => {
     if (zhu === ke) return "氣位相合，氣候平穩。";
@@ -447,7 +447,7 @@ export default function CalculationTool() {
 
             <p className="text-sm">
               <strong className="text-ink">【趨勢分析】</strong><br />
-              上半年防反常氣候，下半年決定入冬寒溫。醫者應參考「客主加臨」變化，靈活調整方藥。
+              {strength.trend}
             </p>
             <div className="bg-white/50 p-4 rounded-xl border border-jade/10 text-xs italic text-ink/50">
               註：運氣推算僅供臨床參考。
