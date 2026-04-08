@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from "motion/react";
 import { 
   BookOpen, 
@@ -21,6 +21,10 @@ type Tab = 'theory' | 'calc' | 'library' | 'about';
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('theory');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    document.title = "岐黃運氣學堂：阿銘醫師的五運六氣研究筆記";
+  }, []);
 
   const tabs = [
     { id: 'theory', label: '理論介紹', icon: BookOpen },
