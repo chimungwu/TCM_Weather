@@ -266,41 +266,40 @@ export const getYunQiStrength = (stem: string, branch: string, daYun: string, si
   const genMap: Record<string, string> = { '木': '火', '火': '土', '土': '金', '金': '水', '水': '木' };
   const overcomeMap: Record<string, string> = { '木': '土', '土': '水', '水': '火', '火': '金', '金': '木' };
 
-  // 第一層：基本生剋關係
-  let baseType = '';
-  let baseDetail = '';
+  // 1. 判定生剋關係 (第一層)
+  let relationship = '';
+  let relDetail = '';
   
   if (overcomeMap[qiEl] === daYun) {
-    baseType = '天刑 (氣克運)';
-    baseDetail = '司天之氣克歲運，氣候極度不穩，病苦劇烈，屬「大逆」。';
+    relationship = '天刑 (氣克運)';
+    relDetail = '司天之氣克歲運，氣候極度不穩，病苦劇烈，屬「大逆」。';
   } else if (overcomeMap[daYun] === qiEl) {
-    baseType = '小逆 (運克氣)';
-    baseDetail = '歲運克司天之氣，雖有波動但影響稍輕。';
+    relationship = '小逆 (運克氣)';
+    relDetail = '歲運克司天之氣，雖有波動但影響稍輕。';
   } else if (genMap[qiEl] === daYun) {
-    baseType = '順化 (氣生運)';
-    baseDetail = '司天之氣生歲運，氣候變化較為順應。';
+    relationship = '順化 (氣生運)';
+    relDetail = '司天之氣生歲運，氣候變化較為順應。';
   } else if (daYun === qiEl) {
-    baseType = '天符 (運氣相同)';
-    baseDetail = '歲運與司天五行相同，氣候特徵極強，發病極速。';
+    relationship = '天符 (運氣同)';
+    relDetail = '歲運與司天五行相同，氣候特徵極強，發病極速。';
   } else {
-    baseType = '運氣平衡';
-    baseDetail = '運與氣勢力平衡，氣候相對穩定。';
+    relationship = '運氣平衡';
+    relDetail = '運與氣勢力平衡，氣候相對穩定。';
   }
 
-  // 第二層：特殊身分判定
+  // 2. 判定特殊身分 (第二層)
   const combinations = getCombinationType(stem, branch, daYun, siTian, zaiQuan);
-  const hasSpecialIdentity = combinations.some(c => ['歲會', '天符', '同天符', '同歲會', '太乙天符'].includes(c));
+  const hasSpecialIdentity = combinations.some(c => ['歲會', '同天符', '同歲會', '太乙天符', '天符'].includes(c));
 
-  // 第三層：綜合判定 (是否轉為平氣)
-  let finalType = baseType;
-  let finalDetail = baseDetail;
+  // 3. 勢力對比結論 (第三層)
+  let finalType = relationship;
+  let finalDetail = '';
 
-  if (hasSpecialIdentity && (baseType.includes('小逆') || baseType.includes('天刑'))) {
-    finalType = `平氣之年 (${baseType})`;
-    finalDetail = `本年雖屬 ${baseType}，但因具備 ${combinations.join('、')} 等特殊身分，戾氣被中和，氣候趨向平和穩定。${baseDetail}`;
-  } else if (hasSpecialIdentity) {
-    finalType = `${baseType} (兼具 ${combinations.join('、')})`;
-    finalDetail = `本年運氣相合且具備特殊身分，氣候特徵顯著且穩定。${baseDetail}`;
+  if (hasSpecialIdentity) {
+    finalType = `平氣之年 (${relationship})`;
+    finalDetail = '異常盛衰被抵消，氣候趨向平和。';
+  } else {
+    finalDetail = '運氣依常規盛衰運行，需防氣候劇烈波動。';
   }
 
   const getTrendText = (qi: string, isFirstHalf: boolean) => {
@@ -315,7 +314,13 @@ export const getYunQiStrength = (stem: string, branch: string, daYun: string, si
 
   const trend = `${getTrendText(siTian, true)} ${getTrendText(zaiQuan, false)} 醫者應參考「客主加臨」之微調，靈活處方。`;
 
-  return { type: finalType, detail: finalDetail, trend };
+  return { 
+    type: finalType, 
+    detail: finalDetail, 
+    relDetail, // 額外提供具體的生剋細節
+    trend,
+    combinations 
+  };
 };
 
 export const getCombinationType = (stem: string, branch: string, daYun: string, siTian: string, zaiQuan: string) => {

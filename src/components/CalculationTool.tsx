@@ -470,7 +470,7 @@ export default function CalculationTool() {
               </p>
               <p className="text-xs mt-3 pt-3 border-t border-jade/10 text-ink/60">
                 <strong className="text-jade">勢力對比：</strong>本年呈現<strong>「{strength.type}」</strong>。<br />
-                <span className="mt-1 block">{strength.detail}</span>
+                <span className="mt-1 block">{strength.detail} {strength.relDetail}</span>
               </p>
             </div>
 
