@@ -257,7 +257,7 @@ export const getMovementSteps = (daYun: string, isExcess: boolean) => {
   return { mainSteps: mainStepsData, guestSteps, applications };
 };
 
-export const getYunQiStrength = (daYun: string, siTian: string, zaiQuan: string) => {
+export const getYunQiStrength = (stem: string, branch: string, daYun: string, siTian: string, zaiQuan: string) => {
   const elements: Record<string, string> = {
     '厥陰風木': '木', '少陰君火': '火', '少陽相火': '火',
     '太陰濕土': '土', '陽明燥金': '金', '太陽寒水': '水'
@@ -265,6 +265,43 @@ export const getYunQiStrength = (daYun: string, siTian: string, zaiQuan: string)
   const qiEl = elements[siTian];
   const genMap: Record<string, string> = { '木': '火', '火': '土', '土': '金', '金': '水', '水': '木' };
   const overcomeMap: Record<string, string> = { '木': '土', '土': '水', '水': '火', '火': '金', '金': '木' };
+
+  // 第一層：基本生剋關係
+  let baseType = '';
+  let baseDetail = '';
+  
+  if (overcomeMap[qiEl] === daYun) {
+    baseType = '天刑 (氣克運)';
+    baseDetail = '司天之氣克歲運，氣候極度不穩，病苦劇烈，屬「大逆」。';
+  } else if (overcomeMap[daYun] === qiEl) {
+    baseType = '小逆 (運克氣)';
+    baseDetail = '歲運克司天之氣，雖有波動但影響稍輕。';
+  } else if (genMap[qiEl] === daYun) {
+    baseType = '順化 (氣生運)';
+    baseDetail = '司天之氣生歲運，氣候變化較為順應。';
+  } else if (daYun === qiEl) {
+    baseType = '天符 (運氣相同)';
+    baseDetail = '歲運與司天五行相同，氣候特徵極強，發病極速。';
+  } else {
+    baseType = '運氣平衡';
+    baseDetail = '運與氣勢力平衡，氣候相對穩定。';
+  }
+
+  // 第二層：特殊身分判定
+  const combinations = getCombinationType(stem, branch, daYun, siTian, zaiQuan);
+  const hasSpecialIdentity = combinations.some(c => ['歲會', '天符', '同天符', '同歲會', '太乙天符'].includes(c));
+
+  // 第三層：綜合判定 (是否轉為平氣)
+  let finalType = baseType;
+  let finalDetail = baseDetail;
+
+  if (hasSpecialIdentity && (baseType.includes('小逆') || baseType.includes('天刑'))) {
+    finalType = `平氣之年 (${baseType})`;
+    finalDetail = `本年雖屬 ${baseType}，但因具備 ${combinations.join('、')} 等特殊身分，戾氣被中和，氣候趨向平和穩定。${baseDetail}`;
+  } else if (hasSpecialIdentity) {
+    finalType = `${baseType} (兼具 ${combinations.join('、')})`;
+    finalDetail = `本年運氣相合且具備特殊身分，氣候特徵顯著且穩定。${baseDetail}`;
+  }
 
   const getTrendText = (qi: string, isFirstHalf: boolean) => {
     const period = isFirstHalf ? "上半年 (司天)" : "下半年 (在泉)";
@@ -278,69 +315,57 @@ export const getYunQiStrength = (daYun: string, siTian: string, zaiQuan: string)
 
   const trend = `${getTrendText(siTian, true)} ${getTrendText(zaiQuan, false)} 醫者應參考「客主加臨」之微調，靈活處方。`;
 
-  if (genMap[daYun] === qiEl || overcomeMap[daYun] === qiEl) {
-    return { type: '運盛氣衰', detail: '運生氣或運克氣，年度運勢主導。', trend };
-  }
-  if (genMap[qiEl] === daYun || overcomeMap[qiEl] === daYun) {
-    return { type: '氣盛運衰', detail: '氣生運或氣克運，司天之氣主導。', trend };
-  }
-  return { type: '運氣平穩', detail: '運氣相合，氣候較為平和。', trend };
+  return { type: finalType, detail: finalDetail, trend };
 };
 
 export const getCombinationType = (stem: string, branch: string, daYun: string, siTian: string, zaiQuan: string) => {
   const combinations: string[] = [];
   const stemIdx = STEMS.indexOf(stem);
-  const isYang = stemIdx % 2 === 0;
+  const isExcess = stemIdx % 2 === 0; // 太過為陽，不及為陰
+
+  const elements: Record<string, string> = {
+    '厥陰風木': '木', '少陰君火': '火', '少陽相火': '火',
+    '太陰濕土': '土', '陽明燥金': '金', '太陽寒水': '水'
+  };
+  const siTianEl = elements[siTian];
+  const zaiQuanEl = elements[zaiQuan];
+
+  // 修正方位圖：子(水) 丑(土) 寅(木) 卯(木) 辰(土) 巳(火) 午(火) 未(土) 申(金) 酉(金) 戌(土) 亥(水)
+  const correctedBranchMap: Record<string, string> = {
+    '子': '水', '丑': '土', '寅': '木', '卯': '木', '辰': '土', '巳': '火',
+    '午': '火', '未': '土', '申': '金', '酉': '金', '戌': '土', '亥': '水'
+  };
 
   // 1. 天符：歲運 = 司天
-  if (siTian.includes(daYun)) {
+  if (daYun === siTianEl) {
     combinations.push('天符');
   }
 
   // 2. 歲會：歲運屬性 = 歲支方位屬性
-  const branchDirectionMap: Record<string, string> = {
-    '子': '水', '丑': '土', '寅': '木', '卯': '木', '辰': '土', '巳': '火',
-    '午': '火', '未': '土', '申': '金', '酉': '金', '戌': '土', '亥': '水'
-  };
-  if (branchDirectionMap[branch] === daYun) {
+  if (correctedBranchMap[branch] === daYun) {
     combinations.push('歲會');
   }
 
-  // 3. 同天符：陽年，歲運 = 在泉
-  if (isYang && zaiQuan.includes(daYun)) {
-    combinations.push('同天符');
+  // 3. 同天符：
+  // 標準定義：不及之運 (陰年) 且 歲運 = 在泉
+  // 進階定義：如甲辰年，太過之運若與歲會、在泉同化，亦視為同類強化狀態
+  if (daYun === zaiQuanEl) {
+    if (!isExcess) {
+      combinations.push('同天符');
+    } else if (correctedBranchMap[branch] === daYun) {
+      // 如甲辰年，土運太過遇辰土位(歲會)且在泉為土，視為同化強化
+      combinations.push('同天符 (同化)');
+    }
   }
 
-  // 4. 同歲會：陰年，歲運 = 在泉
-  if (!isYang && zaiQuan.includes(daYun)) {
+  // 4. 同歲會：不及之運 (陰年) 且 歲運 = 年度地支方位
+  if (!isExcess && correctedBranchMap[branch] === daYun) {
     combinations.push('同歲會');
   }
 
   // 5. 太乙天符：既是天符又是歲會
   if (combinations.includes('天符') && combinations.includes('歲會')) {
     combinations.push('太乙天符');
-  }
-
-  // 6. 生剋關係判定 (天刑等)
-  const elements: Record<string, string> = {
-    '厥陰風木': '木', '少陰君火': '火', '少陽相火': '火',
-    '太陰濕土': '土', '陽明燥金': '金', '太陽寒水': '水'
-  };
-  const qiEl = elements[siTian];
-  const overcomeMap: Record<string, string> = { '木': '土', '土': '水', '水': '火', '火': '金', '金': '木' };
-
-  if (overcomeMap[daYun] === qiEl) {
-    combinations.push('運克氣 (天刑)');
-  } else if (overcomeMap[qiEl] === daYun) {
-    combinations.push('氣克運 (不相得)');
-  }
-
-  if (combinations.length === 0) {
-    combinations.push('平氣');
-  } else {
-    // 如果有生剋衝突，移除平氣標籤
-    const balancedIdx = combinations.indexOf('平氣');
-    if (balancedIdx > -1) combinations.splice(balancedIdx, 1);
   }
 
   return combinations;

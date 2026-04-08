@@ -47,7 +47,7 @@ export default function CalculationTool() {
   const sanYinFang = getSanYinFangGuidance(sb.stem, sb.branch);
   const combinations = getCombinationType(sb.stem, sb.branch, daYunInfo.movement, stzq.siTian, stzq.zaiQuan);
   const movementSteps = getMovementSteps(daYunInfo.movement, daYunInfo.isExcess);
-  const strength = getYunQiStrength(daYunInfo.movement, stzq.siTian, stzq.zaiQuan);
+  const strength = getYunQiStrength(sb.stem, sb.branch, daYunInfo.movement, stzq.siTian, stzq.zaiQuan);
 
   const getClinicalAdvice = (zhu: string, ke: string) => {
     if (zhu === ke) return "氣位相合，氣候平穩。";
@@ -455,24 +455,22 @@ export default function CalculationTool() {
                 運氣合德與同化分析
               </h4>
               <p className="text-xs leading-relaxed font-medium text-ink/80">
-                {combinations.includes('平氣') ? (
-                  <>本年度為<strong>「平氣之年」</strong>，運氣不相符合，氣候變化相對平和，無極端加乘效果。</>
-                ) : (
+                {combinations.length > 0 ? (
                   <>
                     本年度出現<strong>「{combinations.join('、')}」</strong>之局。
-                    {combinations.includes('太乙天符') && " 此為「太乙天符」，乃運、氣、支三者會合，氣候變化極其劇烈，萬物生長受阻，發病重急。"}
-                    {combinations.includes('天符') && !combinations.includes('太乙天符') && " 此為「天符」之年，運與司天相合，氣候變化劇烈，發病速而重。"}
-                    {combinations.includes('歲會') && !combinations.includes('太乙天符') && " 此為「歲會」之年，運與歲支方位相合，氣候平穩但易生積滯。"}
-                    {combinations.includes('同天符') && " 此為「同天符」，太過之運與在泉相合，氣候特徵顯著。"}
-                    {combinations.includes('同歲會') && " 此為「同歲會」，不及之運與在泉相合，氣候平和。"}
+                    {combinations.includes('太乙天符') && " 此為「太乙天符」，乃運、氣、支三者會合，氣候變化極其劇烈。"}
+                    {combinations.includes('天符') && !combinations.includes('太乙天符') && " 此為「天符」之年，運與司天相合，氣候變化劇烈。"}
+                    {combinations.includes('歲會') && !combinations.includes('太乙天符') && " 此為「歲會」之年，運與歲支方位相合。"}
+                    {(combinations.includes('同天符') || combinations.includes('同天符 (同化)')) && " 此為「同天符」，運與在泉相合。"}
+                    {combinations.includes('同歲會') && " 此為「同歲會」，不及之運與地支方位相合。"}
                   </>
+                ) : (
+                  <>本年度無特殊合化之局，運氣依常規盛衰運行。</>
                 )}
               </p>
               <p className="text-xs mt-3 pt-3 border-t border-jade/10 text-ink/60">
-                <strong className="text-jade">勢力對比：</strong>本年呈現<strong>「{strength.type}」</strong>。
-                {strength.type === '運盛氣衰' ? '大運之力強於司天，年度氣候受五運主導明顯。' : 
-                 strength.type === '氣盛運衰' ? '司天之氣強於大運，氣候多隨六氣司天而變。' : 
-                 '運與氣勢力平衡，氣候相對穩定。'}
+                <strong className="text-jade">勢力對比：</strong>本年呈現<strong>「{strength.type}」</strong>。<br />
+                <span className="mt-1 block">{strength.detail}</span>
               </p>
             </div>
 
