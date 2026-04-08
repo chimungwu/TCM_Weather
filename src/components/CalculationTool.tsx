@@ -175,8 +175,11 @@ export default function CalculationTool() {
                   </div>
                 </div>
                 
-                <div className="flex flex-col items-center gap-1">
-                  <ArrowRight size={18} className="text-ink/20" />
+                <div className="flex flex-col items-center gap-1.5">
+                  <div className={`text-[9px] font-bold px-2 py-0.5 rounded-full bg-white border border-ink/5 shadow-sm whitespace-nowrap ${movementSteps.relationships[i].color}`}>
+                    {movementSteps.relationships[i].label}
+                  </div>
+                  <ArrowRight size={18} className={movementSteps.relationships[i].color} />
                 </div>
 
                 <div className="text-center">

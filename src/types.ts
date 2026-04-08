@@ -206,6 +206,20 @@ export const getSuWenGuidance = (qi: string) => {
   return mapping[qi] || { principle: '詳見《素問·至真要大論》。', flavors: '五味調和' };
 };
 
+export const getMovementRelationship = (main: string, guest: string) => {
+  if (main === guest) return { status: '同', label: '同氣', color: 'text-ink/40', icon: 'Equal' };
+  
+  const genMap: Record<string, string> = { '木': '火', '火': '土', '土': '金', '金': '水', '水': '木' };
+  const overcomeMap: Record<string, string> = { '木': '土', '土': '水', '水': '火', '火': '金', '金': '木' };
+
+  if (genMap[guest] === main) return { status: '順', label: '客生主', color: 'text-jade', icon: 'ArrowUpRight' };
+  if (genMap[main] === guest) return { status: '洩', label: '主生客', color: 'text-blue-400', icon: 'ArrowDownRight' };
+  if (overcomeMap[guest] === main) return { status: '逆', label: '客克主', color: 'text-cinnabar', icon: 'X' };
+  if (overcomeMap[main] === guest) return { status: '和', label: '主克客', color: 'text-amber-500', icon: 'Check' };
+  
+  return { status: '和', label: '相平', color: 'text-ink/20', icon: 'Minus' };
+};
+
 export const getMovementSteps = (daYun: string, isExcess: boolean) => {
   // 主運固定：木 -> 火 -> 土 -> 金 -> 水 (角徵宮商羽)
   const mainSteps = ['木', '火', '土', '金', '水'];
@@ -238,6 +252,8 @@ export const getMovementSteps = (daYun: string, isExcess: boolean) => {
     });
   }
   
+  const relationships = mainStepsData.map((m, i) => getMovementRelationship(m.movement, guestSteps[i].movement));
+  
   const getAppText = (main: string, guest: string) => {
     if (main === guest) return '同氣相助，氣候特徵顯著。';
     
@@ -252,9 +268,9 @@ export const getMovementSteps = (daYun: string, isExcess: boolean) => {
     return '氣候相對平穩。';
   };
 
-  const applications = mainSteps.map((main, i) => getAppText(main, guestSteps[i].movement));
+  const applications = mainStepsData.map((m, i) => getAppText(m.movement, guestSteps[i].movement));
   
-  return { mainSteps: mainStepsData, guestSteps, applications };
+  return { mainSteps: mainStepsData, guestSteps, relationships, applications };
 };
 
 export const getYunQiStrength = (stem: string, branch: string, daYun: string, siTian: string, zaiQuan: string) => {
