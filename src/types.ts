@@ -335,8 +335,93 @@ export const getYunQiStrength = (stem: string, branch: string, daYun: string, si
     detail: finalDetail, 
     relDetail, // 額外提供具體的生剋細節
     trend,
-    combinations 
+    combinations,
+    hasSpecialIdentity // 新增此標記以便後續判定
   };
+};
+
+export const getAdvancedWarnings = (daYun: string, siTian: string, hasSpecialIdentity: boolean) => {
+  const elements: Record<string, string> = {
+    '厥陰風木': '木', '少陰君火': '火', '少陽相火': '火',
+    '太陰濕土': '土', '陽明燥金': '金', '太陽寒水': '水'
+  };
+  const qiEl = elements[siTian];
+  const overcomeMap: Record<string, string> = { '木': '土', '土': '水', '水': '火', '火': '金', '金': '木' };
+  
+  // 五鬱判定：找出被壓制的五行
+  let suppressedElement = '';
+  if (overcomeMap[daYun] === qiEl) {
+    suppressedElement = qiEl; // 運克氣，氣被鬱
+  } else if (overcomeMap[qiEl] === daYun) {
+    suppressedElement = daYun; // 氣克運，運被鬱
+  }
+
+  const yuData: Record<string, { label: string, climate: string, clinical: string, guidance: string }> = {
+    '木': {
+      label: '木鬱之發 (木鬱達之)',
+      climate: '氣候可能出現「暴發性」的狂風、地震，或雲氣劇烈流轉後突然轉晴。',
+      clinical: '病人易出現暴怒、眩暈、脅肋劇痛、筋脈拘急抽搐。',
+      guidance: '強調「木鬱達之」。應以疏肝理氣、助其條達為先，不可過用酸澀收斂，以免鎖死鬱氣導致肝火內燃。'
+    },
+    '火': {
+      label: '火鬱之發 (火鬱發之)',
+      climate: '氣候可能出現「暴發性」的極端高熱、雷電閃電、山火，或是乾旱後的熱浪襲人。',
+      clinical: '病人易出現驚瘛、暴發性紅腫癰瘍、口舌生瘡、或是突發性的出血症。',
+      guidance: '強調「火鬱發之」。應以升散透發、微汗解之為先，不可過用大苦大寒硬壓，以免火鬱不伸引發更嚴重的報復性反彈。'
+    },
+    '土': {
+      label: '土鬱之發 (土鬱奪之)',
+      climate: '氣候可能出現「暴發性」的連陰暴雨、土石流、或是大霧瀰漫，導致物候呈現腐化之象。',
+      clinical: '病人易出現胸腹暴脹、嘔吐下利、肌肉痠重、甚至是嚴重的浮腫。',
+      guidance: '強調「土鬱奪之」。應以燥濕運化、疏通中焦為先，不可過用甘甜或滋膩補藥，以免加重濕土壅滯。'
+    },
+    '金': {
+      label: '金鬱之發 (金鬱泄之)',
+      climate: '氣候可能出現「暴發性」的極端乾燥、燥風席捲、或是嚴重的霧霾，草木呈現乾枯之象。',
+      clinical: '病人易出現暴發性乾咳、胸悶如塞、皮膚突發性乾癢、失音。',
+      guidance: '強調「金鬱泄之」。應以宣肺理氣、助其肅降為先，不可過用寒涼冰伏，以免金氣受寒凝結，導致咳嗽遷延不癒。'
+    },
+    '水': {
+      label: '水鬱之發 (水鬱折之)',
+      climate: '氣候可能出現「暴發性」的冰雹、暴雪、極端寒流，或是寒冷陰雨連綿不絕。',
+      clinical: '病人易出現全身浮腫、小便不通、關節冷痛拘急、或是心水泛濫的喘促。',
+      guidance: '強調「水鬱折之」。應以溫陽化氣、導水下行為先，不可過用苦寒藥物（冰伏），防止水寒之氣凍結經絡，損害腎陽。'
+    }
+  };
+
+  const yuWarnings = suppressedElement ? {
+    element: suppressedElement,
+    label: yuData[suppressedElement].label,
+    triggerPeriods: ['二之氣 (春分前後)', '五之氣 (秋分前後)'],
+    description: `本年度氣候呈現「${suppressedElement}鬱」之象。氣候受壓制越久，能量累積越高，需防「鬱發」。`,
+    climate: yuData[suppressedElement].climate,
+    clinical: yuData[suppressedElement].clinical,
+    guidance: yuData[suppressedElement].guidance
+  } : null;
+
+  // 勝復提醒：處理氣候的報復性反彈
+  const shengFuData: Record<string, { sheng: string, fu: string, nature: string, guidance: string }> = {
+    '少陰君火': { sheng: '極端暑熱、乾旱', fu: '寒水 (突然暴寒、冰雹、冷雨)', nature: '熱極轉寒', guidance: '清火務必適度，不可苦寒傷陽，以免下半年寒水復氣到來時，病人陽氣崩潰，引發心腎不交之疾。' },
+    '少陽相火': { sheng: '極端暑熱、乾旱', fu: '寒水 (突然暴寒、冰雹、冷雨)', nature: '熱極轉寒', guidance: '清火務必適度，不可苦寒傷陽，以免下半年寒水復氣到來時，病人陽氣崩潰，引發心腎不交之疾。' },
+    '太陰濕土': { sheng: '連雨、大霧、極度潮濕', fu: '風木 (強風、沙塵、氣候暴乾)', nature: '濕極轉風燥', guidance: '化濕不可過燥，留心下半年風木復氣對肝膽的影響，預防風燥傷陰。' },
+    '陽明燥金': { sheng: '極端乾燥、涼燥', fu: '少陽相火 (秋行夏令、暴熱、突發山火)', nature: '燥極轉暴熱', guidance: '潤燥不可過涼，以免下半年相火復氣（秋行夏令）時，寒涼束縛內熱，引發嚴重的呼吸道炎症。' },
+    '太陽寒水': { sheng: '極端寒冷、冰凍', fu: '太陰濕土 (突然暴雨、泥濘、濕熱反彈)', nature: '寒極轉濕熱', guidance: '溫陽不可過燥，預防下半年濕土復氣帶來的濕熱反彈，注意脾胃運化。' },
+    '厥陰風木': { sheng: '強風、氣候多變', fu: '陽明燥金 (突然肅殺、燥冷、萬物乾枯)', nature: '風極轉燥冷', guidance: '疏肝不可過動，預防下半年金氣復氣的肅殺之性，注意養血潤燥。' }
+  };
+
+  const shengFu = !hasSpecialIdentity ? {
+    condition: '非平氣之年',
+    siTian,
+    sheng: shengFuData[siTian]?.sheng || '極端氣候',
+    fu: shengFuData[siTian]?.fu || '報復性反彈',
+    nature: shengFuData[siTian]?.nature || '極端切換',
+    description: '本年度非平氣之年，氣候調節機制活躍，需防範氣候的報復性反彈（勝復）。',
+    warning: `預警：上半年由 ${siTian} 主導，若出現極端的 ${shengFuData[siTian]?.sheng}，下半年必會誘發 ${shengFuData[siTian]?.fu} 的報復性反彈。`,
+    guidance: `臨床對策：當勝復發生時，病機將出現 180 度大轉變。醫師開藥時應「留有一線」，上半年處理勝氣時不可過度用藥，以免加劇下半年復氣到來時的人體負擔。`,
+    doctorNote: shengFuData[siTian]?.guidance || '開藥應留有一線，預防氣候劇烈切換。'
+  } : null;
+
+  return { yuWarnings, shengFu };
 };
 
 export const getCombinationType = (stem: string, branch: string, daYun: string, siTian: string, zaiQuan: string) => {

@@ -29,7 +29,8 @@ import {
   getCombinationType,
   getMovementSteps,
   getYunQiStrength,
-  getPulseGuidance
+  getPulseGuidance,
+  getAdvancedWarnings
 } from '../types';
 import YunQiWheel from './YunQiWheel';
 
@@ -50,6 +51,7 @@ export default function CalculationTool() {
   const movementSteps = getMovementSteps(daYunInfo.movement, daYunInfo.isExcess);
   const strength = getYunQiStrength(sb.stem, sb.branch, daYunInfo.movement, stzq.siTian, stzq.zaiQuan);
   const pulseGuidance = getPulseGuidance(stzq.siTian, stzq.zaiQuan);
+  const advancedWarnings = getAdvancedWarnings(daYunInfo.movement, stzq.siTian, strength.hasSpecialIdentity || false);
 
   const getClinicalAdvice = (zhu: string, ke: string) => {
     if (zhu === ke) return "氣位相合，氣候平穩。";
@@ -528,6 +530,76 @@ export default function CalculationTool() {
               <strong className="text-ink">【趨勢分析】</strong><br />
               {strength.trend}
             </p>
+
+            {(advancedWarnings.yuWarnings || advancedWarnings.shengFu) && (
+              <div className="space-y-4 pt-4 border-t border-jade/10">
+                <h4 className="text-sm font-bold text-cinnabar flex items-center gap-2">
+                  <AlertTriangle size={16} />
+                  進階氣候預警 (五鬱與勝復)
+                </h4>
+                
+                {advancedWarnings.yuWarnings && (
+                  <div className="bg-cinnabar/5 p-4 rounded-xl border border-cinnabar/20">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-bold text-cinnabar bg-white px-2 py-0.5 rounded-full border border-cinnabar/10">
+                        年度重點：{advancedWarnings.yuWarnings.label}
+                      </span>
+                      <span className="text-[10px] text-cinnabar/60 font-bold">
+                        高風險期：{advancedWarnings.yuWarnings.triggerPeriods.join('、')}
+                      </span>
+                    </div>
+                    <p className="text-xs text-ink/80 leading-relaxed mb-3">
+                      {advancedWarnings.yuWarnings.description}
+                    </p>
+                    
+                    <div className="space-y-3">
+                      <div className="bg-white/60 p-3 rounded-lg border border-cinnabar/10">
+                        <div className="text-[10px] font-bold text-cinnabar/60 uppercase tracking-wider mb-1">預警特徵 (氣候)</div>
+                        <div className="text-xs font-bold text-ink">{advancedWarnings.yuWarnings.climate}</div>
+                      </div>
+                      <div className="bg-white/60 p-3 rounded-lg border border-cinnabar/10">
+                        <div className="text-[10px] font-bold text-cinnabar/60 uppercase tracking-wider mb-1">臨床表現 (人體)</div>
+                        <div className="text-xs font-medium text-ink/80">{advancedWarnings.yuWarnings.clinical}</div>
+                      </div>
+                      <div className="bg-jade/5 p-3 rounded-lg border border-jade/10">
+                        <div className="text-[10px] font-bold text-jade/60 uppercase tracking-wider mb-1">臨床指導</div>
+                        <div className="text-xs font-bold text-jade italic">{advancedWarnings.yuWarnings.guidance}</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {advancedWarnings.shengFu && (
+                  <div className="bg-amber-50 p-4 rounded-xl border border-amber-200">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-bold text-amber-700 bg-white px-2 py-0.5 rounded-full border border-amber-100">
+                        動態平衡 (勝復提醒)
+                      </span>
+                      <span className="text-[10px] text-amber-600 font-bold">
+                        判定：{strength.type}
+                      </span>
+                    </div>
+                    <p className="text-xs text-ink/70 leading-relaxed mb-3">
+                      {advancedWarnings.shengFu.description}
+                    </p>
+                    
+                    <div className="space-y-3">
+                      <div className="bg-white/60 p-3 rounded-lg border border-amber-100">
+                        <div className="text-[10px] font-bold text-amber-600/60 uppercase tracking-wider mb-1">動態邏輯描述</div>
+                        <div className="text-xs font-bold text-ink">{advancedWarnings.shengFu.warning}</div>
+                        <div className="mt-1 text-[10px] text-amber-700 font-medium">現象：氣候可能出現「{advancedWarnings.shengFu.nature}」的劇烈變動。</div>
+                      </div>
+                      
+                      <div className="bg-amber-100/50 p-3 rounded-lg border border-amber-200">
+                        <div className="text-[10px] font-bold text-amber-800/60 uppercase tracking-wider mb-1">臨床醫師指導</div>
+                        <div className="text-xs font-medium text-ink/80 mb-2">{advancedWarnings.shengFu.guidance}</div>
+                        <div className="text-xs font-bold text-amber-900 italic">醫師叮嚀：{advancedWarnings.shengFu.doctorNote}</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
             <div className="bg-white/50 p-4 rounded-xl border border-jade/10 text-xs italic text-ink/50">
               註：運氣推算僅供臨床參考。
             </div>
