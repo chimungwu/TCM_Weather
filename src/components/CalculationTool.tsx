@@ -28,7 +28,8 @@ import {
   getSanYinFangGuidance,
   getCombinationType,
   getMovementSteps,
-  getYunQiStrength
+  getYunQiStrength,
+  getPulseGuidance
 } from '../types';
 import YunQiWheel from './YunQiWheel';
 
@@ -48,6 +49,7 @@ export default function CalculationTool() {
   const combinations = getCombinationType(sb.stem, sb.branch, daYunInfo.movement, stzq.siTian, stzq.zaiQuan);
   const movementSteps = getMovementSteps(daYunInfo.movement, daYunInfo.isExcess);
   const strength = getYunQiStrength(sb.stem, sb.branch, daYunInfo.movement, stzq.siTian, stzq.zaiQuan);
+  const pulseGuidance = getPulseGuidance(stzq.siTian, stzq.zaiQuan);
 
   const getClinicalAdvice = (zhu: string, ke: string) => {
     if (zhu === ke) return "氣位相合，氣候平穩。";
@@ -358,6 +360,51 @@ export default function CalculationTool() {
               <div className="flex items-center gap-2 text-xs">
                 <span className="text-ink/40 font-bold">藥性選擇：</span>
                 <span className="text-jade font-bold bg-jade/5 px-2 py-0.5 rounded border border-jade/10">{suWenZaiQuan.flavors}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 space-y-4">
+            <h3 className="text-xl font-bold flex items-center gap-2 text-ink">
+              <BookOpen size={24} className="text-amber-600" />
+              脈象診法參考
+            </h3>
+            <div className="bg-amber-50 p-6 rounded-2xl border border-amber-200">
+              <div className="space-y-4">
+                <div>
+                  <h4 className="text-xs font-bold text-amber-800 mb-2 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+                    上半年 (司天) 應見脈象
+                  </h4>
+                  <div className="bg-white p-3 rounded-xl border border-amber-100">
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-sm font-bold text-ink">{pulseGuidance.siTian.pulse}</span>
+                      <span className="text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">{pulseGuidance.siTian.position}</span>
+                    </div>
+                    <p className="text-xs text-ink/60 leading-relaxed">
+                      <strong className="text-cinnabar">逆脈預警：</strong>{pulseGuidance.siTian.inverse}
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-xs font-bold text-amber-800 mb-2 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+                    下半年 (在泉) 應見脈象
+                  </h4>
+                  <div className="bg-white p-3 rounded-xl border border-amber-100">
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-sm font-bold text-ink">{pulseGuidance.zaiQuan.pulse}</span>
+                      <span className="text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">{pulseGuidance.zaiQuan.position}</span>
+                    </div>
+                    <p className="text-xs text-ink/60 leading-relaxed">
+                      <strong className="text-cinnabar">逆脈預警：</strong>{pulseGuidance.zaiQuan.inverse}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 p-3 bg-cinnabar/5 rounded-xl border border-dashed border-cinnabar/20 text-[10px] text-cinnabar/80 leading-relaxed">
+                <strong>臨床提示：</strong>《素問》云「反其位者病，失其時者死」。若脈象與當令氣候相反，提示病情變化較為複雜，需詳察病機。
               </div>
             </div>
           </div>

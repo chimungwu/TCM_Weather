@@ -392,6 +392,46 @@ export const getCombinationType = (stem: string, branch: string, daYun: string, 
   return combinations;
 };
 
+export const getPulseGuidance = (siTian: string, zaiQuan: string) => {
+  const pulseMap: Record<string, { pulse: string; position: string; inverse: string }> = {
+    '厥陰風木': { 
+      pulse: '脈弦', 
+      position: '應見於左手',
+      inverse: '若見沉細或浮大而散，為逆。' 
+    },
+    '少陰君火': { 
+      pulse: '脈大而浮', 
+      position: '應見於右手',
+      inverse: '若見沉細或弦緊，為逆。' 
+    },
+    '太陰濕土': { 
+      pulse: '脈沉而緩', 
+      position: '應見於右手',
+      inverse: '若見弦急或浮大，為逆。' 
+    },
+    '少陽相火': { 
+      pulse: '脈大而浮', 
+      position: '應見於左手',
+      inverse: '若見沉細或弦緊，為逆。' 
+    },
+    '陽明燥金': { 
+      pulse: '脈短而濇', 
+      position: '應見於左手',
+      inverse: '若見洪大或滑數，為逆。' 
+    },
+    '太陽寒水': { 
+      pulse: '脈沉而緊', 
+      position: '應見於右手',
+      inverse: '若見浮大或數，為逆。' 
+    }
+  };
+
+  return {
+    siTian: pulseMap[siTian],
+    zaiQuan: pulseMap[zaiQuan]
+  };
+};
+
 export const getSanYinFangGuidance = (stem: string, branch: string) => {
   const stemFormulaMap: Record<string, { name: string; ingredients: string; logic: string; mods: string }> = {
     '甲': { name: '附子山茱萸湯', ingredients: '附子、山茱萸、木瓜、熟地、乾薑、甘草', logic: '土運太過，濕氣盛。', mods: '濕腫腹瀉加蒼朮、茯苓；腎陽虛加肉桂。' },
