@@ -321,75 +321,62 @@ export const getCombinationType = (stem: string, branch: string, daYun: string, 
     combinations.push('太乙天符');
   }
 
+  // 6. 生剋關係判定 (天刑等)
+  const elements: Record<string, string> = {
+    '厥陰風木': '木', '少陰君火': '火', '少陽相火': '火',
+    '太陰濕土': '土', '陽明燥金': '金', '太陽寒水': '水'
+  };
+  const qiEl = elements[siTian];
+  const overcomeMap: Record<string, string> = { '木': '土', '土': '水', '水': '火', '火': '金', '金': '木' };
+
+  if (overcomeMap[daYun] === qiEl) {
+    combinations.push('運克氣 (天刑)');
+  } else if (overcomeMap[qiEl] === daYun) {
+    combinations.push('氣克運 (不相得)');
+  }
+
   if (combinations.length === 0) {
     combinations.push('平氣');
+  } else {
+    // 如果有生剋衝突，移除平氣標籤
+    const balancedIdx = combinations.indexOf('平氣');
+    if (balancedIdx > -1) combinations.splice(balancedIdx, 1);
   }
 
   return combinations;
 };
 
-export const getSanYinFangGuidance = (stem: string, isExcess: boolean) => {
-  const movementMap: Record<string, string> = {
-    '甲': '土', '己': '土', '乙': '金', '庚': '金', '丙': '水', '辛': '水', '丁': '木', '壬': '木', '戊': '火', '癸': '火'
-  };
-  const movement = movementMap[stem];
-  
-  const formulaMap: Record<string, { 
-    excess: string; 
-    deficiency: string; 
-    logic: string;
-    excessIngredients: string;
-    deficiencyIngredients: string;
-    excessMods: string;
-    deficiencyMods: string;
-  }> = {
-    '木': { 
-      excess: '敷和湯', deficiency: '委和湯', 
-      logic: '調木氣之平。太過則抑其風，不及則助其生。',
-      excessIngredients: '半夏、橘皮、茯苓、甘草、生薑、大棗',
-      deficiencyIngredients: '白朮、茯苓、甘草、當歸、芍藥、熟地',
-      excessMods: '眩暈欲仆者，加天麻、鉤藤；煩躁易怒者，加龍膽草、梔子。',
-      deficiencyMods: '脅肋隱痛者，加柴胡、香附；視物模糊者，加枸杞子、菊花。'
-    },
-    '火': { 
-      excess: '升明湯', deficiency: '伏明湯', 
-      logic: '理火氣之序。太過則清其熱，不及則溫其神。',
-      excessIngredients: '紫菀、遠志、甘草、白芍、山茱萸、生薑、大棗',
-      deficiencyIngredients: '白朮、茯苓、甘草、當歸、芍藥、熟地',
-      excessMods: '心煩不寐者，加酸棗仁、柏子仁；口舌生瘡者，加黃連、竹葉。',
-      deficiencyMods: '心悸怔忡者，加人參、遠志；畏寒肢冷者，加肉桂、附子。'
-    },
-    '土': { 
-      excess: '備化湯', deficiency: '卑監湯', 
-      logic: '建中土之德。太過則化其濕，不及則培其本。',
-      excessIngredients: '木瓜、茯苓、茯神、甘草、附子、乾薑、厚朴',
-      deficiencyIngredients: '白朮、厚朴、茯苓、茯神、甘草、木瓜、附子',
-      excessMods: '腹脹甚者，加大腹皮、砂仁；濕痰盛者，加半夏、陳皮。',
-      deficiencyMods: '嘔吐泄瀉者，加砂仁、肉豆蔻；食慾不振者，加神曲、山楂。'
-    },
-    '金': { 
-      excess: '審平湯', deficiency: '從革湯', 
-      logic: '肅金氣之令。太過則潤其燥，不及則補其肺。',
-      excessIngredients: '遠志、紫菀、天門冬、甘草、白芍、山茱萸',
-      deficiencyIngredients: '白朮、茯苓、甘草、當歸、芍藥、熟地',
-      excessMods: '咽乾口燥者，加麥門冬、玄參；皮膚瘙癢者，加蟬蛻、防風。',
-      deficiencyMods: '咳嗽痰多者，加半夏、五味子；氣短乏力者，加人參、黃耆。'
-    },
-    '水': { 
-      excess: '靜順湯', deficiency: '涸流湯', 
-      logic: '安水氣之源。太過則溫其寒，不及則滋其源。',
-      excessIngredients: '茯苓、茯神、甘草、乾薑、附子、牛膝、木瓜',
-      deficiencyIngredients: '白朮、茯苓、甘草、當歸、芍藥、熟地',
-      excessMods: '腰膝冷痛甚者，加肉桂、杜仲；水腫者，加澤瀉、豬苓。',
-      deficiencyMods: '遺精滑泄者，加金櫻子、芡實；頭暈耳鳴者，加熟地、山藥。'
-    }
+export const getSanYinFangGuidance = (stem: string, branch: string) => {
+  const stemFormulaMap: Record<string, { name: string; ingredients: string; logic: string; mods: string }> = {
+    '甲': { name: '附子山茱萸湯', ingredients: '附子、山茱萸、木瓜、熟地、乾薑、甘草', logic: '土運太過，濕氣盛。', mods: '濕腫腹瀉加蒼朮、茯苓；腎陽虛加肉桂。' },
+    '己': { name: '白朮厚朴湯', ingredients: '白朮、厚朴、茯苓、甘草、陳皮、生薑', logic: '土運不及，風木乘土。', mods: '食慾差加山楂、神曲；木克土（脅痛）加柴胡、白芍。' },
+    '丙': { name: '玄參升麻湯', ingredients: '玄參、升麻、犀角(可用水牛角代)、甘草、防風', logic: '水運太過，寒氣盛。', mods: '寒感重則減玄參、加乾薑；火鬱口瘡加黃連。' },
+    '辛': { name: '地黃明目丹', ingredients: '熟地、山藥、山茱萸、澤瀉、茯苓、丹皮', logic: '水運不及，燥金乘水。', mods: '眼乾加枸杞；陰虛火旺加知母、黃柏。' },
+    '戊': { name: '麥門冬湯', ingredients: '麥門冬、半夏、人參、甘草、粳米、大棗', logic: '火運太過，熱氣盛。', mods: '乾咳加川貝；心火旺加蓮子心、竹葉。' },
+    '癸': { name: '黃耆茯神湯', ingredients: '黃耆、茯神、遠志、甘草、茯苓、人參', logic: '火運不及，寒水乘火。', mods: '心悸失眠加酸棗仁；氣虛乏力加人參。' },
+    '庚': { name: '牛膝煎', ingredients: '牛膝、熟地、當歸、白芍、肉桂、杜仲', logic: '金運太過，燥氣盛。', mods: '關節僵硬加威靈仙；肺燥明顯加麥門冬。' },
+    '乙': { name: '紫菀湯', ingredients: '紫菀、款冬花、百部、桔梗、甘草、白前', logic: '金運不及，火熱乘金。', mods: '久咳加款冬花；易感冒加防風、黃耆。' },
+    '壬': { name: '苓朮湯', ingredients: '茯苓、白朮、厚朴、甘草、草豆蔻、生薑', logic: '木運太過，風氣盛。', mods: '肝氣逆加薄荷；腹痛急迫重用白芍。' },
+    '丁': { name: '備化湯', ingredients: '木瓜、茯苓、甘草、附子、乾薑、厚朴', logic: '木運不及，燥金乘木。', mods: '肝血虛加當歸、熟地；燥金侵襲加桑葉。' }
   };
 
-  const info = formulaMap[movement];
+  const branchFormulaMap: Record<string, { name: string; ingredients: string; logic: string; mods: string }> = {
+    '子': { name: '備化湯', ingredients: '木瓜、茯苓、甘草、附子、乾薑、厚朴', logic: '少陰君火司天。', mods: '高熱傷津加石膏；心煩不寐加梔子。' },
+    '午': { name: '備化湯', ingredients: '木瓜、茯苓、甘草、附子、乾薑、厚朴', logic: '少陰君火司天。', mods: '高熱傷津加石膏；心煩不寐加梔子。' },
+    '丑': { name: '靜順湯', ingredients: '茯苓、茯神、甘草、乾薑、附子、牛膝、木瓜', logic: '太陰濕土司天。', mods: '下肢水腫加澤瀉；濕阻中焦加砂仁、豆蔻。' },
+    '未': { name: '靜順湯', ingredients: '茯苓、茯神、甘草、乾薑、附子、牛膝、木瓜', logic: '太陰濕土司天。', mods: '下肢水腫加澤瀉；濕阻中焦加砂仁、豆蔻。' },
+    '寅': { name: '審平湯', ingredients: '遠志、紫菀、天門冬、甘草、白芍、山茱萸', logic: '少陽相火司天。', mods: '咽喉劇痛加射干；熱入營血加生地、丹皮。' },
+    '申': { name: '審平湯', ingredients: '遠志、紫菀、天門冬、甘草、白芍、山茱萸', logic: '少陽相火司天。', mods: '咽喉劇痛加射干；熱入營血加生地、丹皮。' },
+    '卯': { name: '推陳湯', ingredients: '大黃、枳殼、厚朴、甘草、芒硝', logic: '陽明燥金司天。', mods: '大便秘結加大黃；皮膚乾癢加蟬蛻、荊芥。' },
+    '酉': { name: '推陳湯', ingredients: '大黃、枳殼、厚朴、甘草、芒硝', logic: '陽明燥金司天。', mods: '大便秘結加大黃；皮膚乾癢加蟬蛻、荊芥。' },
+    '辰': { name: '正安湯', ingredients: '羌活、獨活、防風、甘草、附子、乾薑', logic: '太陽寒水司天。', mods: '骨節痠痛加羌活、獨活；寒疝腹痛加吳茱萸。' },
+    '戌': { name: '正安湯', ingredients: '羌活、獨活、防風、甘草、附子、乾薑', logic: '太陽寒水司天。', mods: '骨節痠痛加羌活、獨活；寒疝腹痛加吳茱萸。' },
+    '巳': { name: '正陽湯', ingredients: '天麻、鉤藤、全蠍、白僵蠶、甘草', logic: '厥陰風木司天。', mods: '頭暈目眩加天麻、鉤藤；風動抽搐加全蠍。' },
+    '亥': { name: '正陽湯', ingredients: '天麻、鉤藤、全蠍、白僵蠶、甘草', logic: '厥陰風木司天。', mods: '頭暈目眩加天麻、鉤藤；風動抽搐加全蠍。' }
+  };
+
   return {
-    formula: isExcess ? info.excess : info.deficiency,
-    logic: info.logic,
-    ingredients: isExcess ? info.excessIngredients : info.deficiencyIngredients,
-    modifications: isExcess ? info.excessMods : info.deficiencyMods
+    stem: stemFormulaMap[stem],
+    branch: branchFormulaMap[branch]
   };
 };

@@ -44,7 +44,7 @@ export default function CalculationTool() {
 
   const suWenSiTian = getSuWenGuidance(stzq.siTian);
   const suWenZaiQuan = getSuWenGuidance(stzq.zaiQuan);
-  const sanYinFang = getSanYinFangGuidance(sb.stem, daYunInfo.isExcess);
+  const sanYinFang = getSanYinFangGuidance(sb.stem, sb.branch);
   const combinations = getCombinationType(sb.stem, sb.branch, daYunInfo.movement, stzq.siTian, stzq.zaiQuan);
   const movementSteps = getMovementSteps(daYunInfo.movement, daYunInfo.isExcess);
   const strength = getYunQiStrength(daYunInfo.movement, stzq.siTian, stzq.zaiQuan);
@@ -366,30 +366,61 @@ export default function CalculationTool() {
             《三因方》十六政方
           </h3>
           <div className="space-y-6 font-sans">
+            {/* 五運時氣方 */}
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-amber-200">
               <div className="flex items-center justify-between mb-5">
-                <h4 className="text-xl font-bold text-amber-900">{sanYinFang.formula}</h4>
+                <h4 className="text-xl font-bold text-amber-900">{sanYinFang.stem.name}</h4>
                 <span className="text-xs font-bold px-3 py-1 bg-amber-100 text-amber-700 rounded-full border border-amber-200">
-                  {daYunInfo.movement}運{daYunInfo.isExcess ? '太過' : '不及'}
+                  五運時氣方 ({sb.stem}年)
                 </span>
               </div>
               <div className="space-y-5">
                 <div>
                   <h5 className="text-xs font-bold text-ink/40 uppercase mb-2 tracking-wider">組方內容</h5>
                   <p className="text-sm text-cinnabar font-bold leading-relaxed bg-cinnabar/5 p-3 rounded-xl border border-cinnabar/10">
-                    {sanYinFang.ingredients}
+                    {sanYinFang.stem.ingredients}
                   </p>
                 </div>
                 <div>
                   <h5 className="text-xs font-bold text-ink/40 uppercase mb-2 tracking-wider">組成邏輯</h5>
                   <p className="text-sm text-ink/80 leading-relaxed font-serif">
-                    {sanYinFang.logic} 針對{year}年{daYunInfo.movement}氣{daYunInfo.isExcess ? '偏盛' : '偏衰'}之局，調和五臟。
+                    {sanYinFang.stem.logic} 針對{year}年{daYunInfo.movement}運之局，調和五臟。
                   </p>
                 </div>
                 <div>
-                  <h5 className="text-xs font-bold text-ink/40 uppercase mb-2 tracking-wider">臨床加減 (藥物)</h5>
+                  <h5 className="text-xs font-bold text-ink/40 uppercase mb-2 tracking-wider">臨床加減</h5>
                   <p className="text-sm text-ink/70 leading-relaxed italic font-serif">
-                    {sanYinFang.modifications}
+                    {sanYinFang.stem.mods}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* 六氣時行方 */}
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-amber-200">
+              <div className="flex items-center justify-between mb-5">
+                <h4 className="text-xl font-bold text-amber-900">{sanYinFang.branch.name}</h4>
+                <span className="text-xs font-bold px-3 py-1 bg-amber-100 text-amber-700 rounded-full border border-amber-200">
+                  六氣時行方 ({sb.branch}年)
+                </span>
+              </div>
+              <div className="space-y-5">
+                <div>
+                  <h5 className="text-xs font-bold text-ink/40 uppercase mb-2 tracking-wider">組方內容</h5>
+                  <p className="text-sm text-cinnabar font-bold leading-relaxed bg-cinnabar/5 p-3 rounded-xl border border-cinnabar/10">
+                    {sanYinFang.branch.ingredients}
+                  </p>
+                </div>
+                <div>
+                  <h5 className="text-xs font-bold text-ink/40 uppercase mb-2 tracking-wider">組成邏輯</h5>
+                  <p className="text-sm text-ink/80 leading-relaxed font-serif">
+                    {sanYinFang.branch.logic} 針對{stzq.siTian}司天之局，平調六氣。
+                  </p>
+                </div>
+                <div>
+                  <h5 className="text-xs font-bold text-ink/40 uppercase mb-2 tracking-wider">臨床加減</h5>
+                  <p className="text-sm text-ink/70 leading-relaxed italic font-serif">
+                    {sanYinFang.branch.mods}
                   </p>
                 </div>
               </div>
