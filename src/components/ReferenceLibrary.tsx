@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpen, ExternalLink, ScrollText } from "lucide-react";
+import { BookOpen, ScrollText } from "lucide-react";
 
 const CLASSICS = [
   {
@@ -21,6 +21,11 @@ const CLASSICS = [
     title: "《三因極一病證方論》",
     description: "宋代陳無擇著，將運氣理論與臨床辨證方藥緊密結合的代表作。",
     tags: ["臨床應用", "宋代經典"]
+  },
+  {
+    title: "《類經圖翼》",
+    description: "明代張景岳著，對運氣學說進行了大量的圖解與總結，是學習運氣推算的必讀之作。",
+    tags: ["圖解總結", "明代經典"]
   }
 ];
 
@@ -43,12 +48,9 @@ export default function ReferenceLibrary() {
               </div>
             </div>
             <h3 className="text-xl font-bold mb-3">{book.title}</h3>
-            <p className="text-ink/70 text-base font-sans leading-relaxed mb-8">
+            <p className="text-ink/70 text-base font-sans leading-relaxed">
               {book.description}
             </p>
-            <button className="flex items-center gap-2 text-sm font-bold font-sans text-cinnabar hover:underline">
-              查看詳細內容 <ExternalLink size={16} />
-            </button>
           </div>
         ))}
       </div>

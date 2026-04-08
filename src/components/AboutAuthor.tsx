@@ -23,8 +23,13 @@ export default function AboutAuthor() {
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-jade/5 rounded-full -ml-20 -mb-20 blur-2xl" />
         
         <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-12">
-          <div className="w-40 h-40 bg-parchment rounded-full border-4 border-white shadow-lg flex items-center justify-center shrink-0 overflow-hidden">
-            <User size={80} className="text-ink/20" />
+          <div className="w-48 h-48 md:w-56 md:h-56 bg-parchment rounded-3xl border-4 border-white shadow-2xl flex items-center justify-center shrink-0 overflow-hidden rotate-3 hover:rotate-0 transition-transform duration-500">
+            <img 
+              src="https://fineherb.com.tw/storage/upload/doctor/image/2019-10-31/3jJ7dL07kkxIV0FubcvBOziR6rlvtHclsX4qzF1v.png" 
+              alt="吳啓銘 醫師" 
+              className="w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+            />
           </div>
           
           <div className="text-center md:text-left">
