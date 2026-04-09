@@ -26,130 +26,115 @@ export default function YunQiWheel({ year, siTian, zaiQuan, zhuQi, keQi }: YunQi
 
   const size = 500;
   const center = size / 2;
-  const radius = 200;
+  const radius = 220;
+  const innerRadius = 70;
+
+  // Colors for the wedges (approximated from the image)
+  const wedgeColors = [
+    '#e8f5e9', // Light Green (Step 1)
+    '#fce4ec', // Light Pink (Step 2)
+    '#fffde7', // Pale Yellow (Step 3 - Si Tian)
+    '#f5f5f5', // Light Grey (Step 4)
+    '#e3f2fd', // Light Blue (Step 5)
+    '#f1f8e9', // Light Green (Step 6 - Zai Quan)
+  ];
 
   return (
     <div className="relative w-full max-w-[500px] mx-auto aspect-square">
-      <svg viewBox="-70 -70 640 640" className="w-full h-full font-serif">
-        {/* Background Circles */}
-        <circle cx={center} cy={center} r={radius + 40} fill="none" stroke="#555555" strokeWidth="1" />
-        <circle cx={center} cy={center} r={radius} fill="white" stroke="#555555" strokeWidth="1" />
-        <circle cx={center} cy={center} r={radius - 60} fill="none" stroke="#555555" strokeWidth="1" />
-
-        {/* Dividing Lines and Segments */}
+      <svg viewBox="0 0 500 500" className="w-full h-full font-serif">
+        {/* Wedges */}
         {steps.map((_, i) => {
-          const startAngle = 120;
-          const angle = (i * 60) + startAngle; 
-          const rad = (angle * Math.PI) / 180;
+          // We want Step 3 (i=2, Si Tian) to be at the TOP.
+          // SVG angles start from 3 o'clock (0 deg).
+          // Top is 270 deg.
+          // Each wedge is 60 deg.
+          // Step 3 center should be at 270. So it starts at 240 and ends at 300.
+          const startAngle = 240 + (i - 2) * 60;
+          const endAngle = startAngle + 60;
           
-          // Retract line start from center to edge of expanded center circle (radius 69)
-          const x1 = center + 69 * Math.cos(rad);
-          const y1 = center + 69 * Math.sin(rad);
-          const x2 = center + (radius + 50) * Math.cos(rad);
-          const y2 = center + (radius + 50) * Math.sin(rad);
+          const x1 = center + radius * Math.cos((startAngle * Math.PI) / 180);
+          const y1 = center + radius * Math.sin((startAngle * Math.PI) / 180);
+          const x2 = center + radius * Math.cos((endAngle * Math.PI) / 180);
+          const y2 = center + radius * Math.sin((endAngle * Math.PI) / 180);
           
+          const midAngle = startAngle + 30;
+          const rad = (midAngle * Math.PI) / 180;
+
           return (
             <g key={i}>
-              <line 
-                x1={x1} y1={y1} 
-                x2={x2} y2={y2} 
-                stroke="#555555" strokeWidth="1" 
+              <path
+                d={`M ${center} ${center} L ${x1} ${y1} A ${radius} ${radius} 0 0 1 ${x2} ${y2} Z`}
+                fill={wedgeColors[i]}
+                stroke="#1a1a1a"
+                strokeWidth="0.5"
+                strokeOpacity="0.2"
               />
               
-              {/* Solar Terms & Dates (Outer) */}
-              {/* Positioned at the center of the segment arc */}
+              {/* Host Qi Label in Wedge */}
               <text
-                x={center + (radius + 72) * Math.cos(rad + (30 * Math.PI / 180))}
-                y={center + (radius + 72) * Math.sin(rad + (30 * Math.PI / 180))}
+                x={center + (radius * 0.7) * Math.cos(rad)}
+                y={center + (radius * 0.7) * Math.sin(rad)}
                 textAnchor="middle"
-                className="text-[14px] fill-ink font-sans font-bold"
+                dominantBaseline="middle"
+                className="text-[14px] font-bold fill-ink/70"
+                transform={`rotate(${midAngle + 90}, ${center + (radius * 0.7) * Math.cos(rad)}, ${center + (radius * 0.7) * Math.sin(rad)})`}
               >
-                {steps[i].term}
+                主 {zhuQi[i]}
               </text>
+
+              {/* Guest Qi Label (Optional, for completeness) */}
               <text
-                x={center + (radius + 105) * Math.cos(rad + (30 * Math.PI / 180))}
-                y={center + (radius + 105) * Math.sin(rad + (30 * Math.PI / 180))}
+                x={center + (radius * 0.45) * Math.cos(rad)}
+                y={center + (radius * 0.45) * Math.sin(rad)}
                 textAnchor="middle"
-                className="text-[11px] fill-ink/70 font-sans font-bold"
+                dominantBaseline="middle"
+                className="text-[12px] font-bold fill-cinnabar/40"
+                transform={`rotate(${midAngle + 90}, ${center + (radius * 0.45) * Math.cos(rad)}, ${center + (radius * 0.45) * Math.sin(rad)})`}
               >
-                {steps[i].date}
+                客 {keQi[i]}
               </text>
             </g>
           );
         })}
 
-        {/* Qi Content */}
-        {steps.map((step, i) => {
-          const angle = (i * 60) + 150; 
-          const startAngle = (angle - 30) * Math.PI / 180;
-          const endAngle = (angle + 30) * Math.PI / 180;
-          
-          // Five Elements Colors (Desaturated)
-          const colors = ['#a8d5ba', '#e5989b', '#f4e0a6', '#b3b3b3', '#99c2e6', '#a8d5ba'];
-          
-          const rel = getRelationshipDetail(zhuQi[i], keQi[i]);
-          const relColor = rel.status === '順' ? '#00a86b' : rel.status === '逆' ? '#b22222' : '#666666';
-
-          // Determine if text should be flipped to be upright
-          const normalizedAngle = angle % 360;
-          const shouldFlip = normalizedAngle > 90 && normalizedAngle < 270;
-          const textRotation = shouldFlip ? normalizedAngle + 180 : normalizedAngle;
-
-          return (
-            <g key={i}>
-              {/* Colored Sector */}
-              <path 
-                d={`M ${center} ${center} L ${center + radius * Math.cos(startAngle)} ${center + radius * Math.sin(startAngle)} A ${radius} ${radius} 0 0 1 ${center + radius * Math.cos(endAngle)} ${center + radius * Math.sin(endAngle)} Z`}
-                fill={colors[i]}
-                fillOpacity="0.3"
-              />
-
-              {/* Guest Qi (Outer Ring) */}
-              <g transform={`translate(${center + (radius - 30) * Math.cos(angle * Math.PI / 180)}, ${center + (radius - 30) * Math.sin(angle * Math.PI / 180)})`}>
-                <text
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                  className={`text-[14px] font-bold ${i === 2 ? 'fill-cinnabar' : i === 5 ? 'fill-jade' : 'fill-ink'}`}
-                >
-                  {i === 2 ? '司天 ' : i === 5 ? '在泉 ' : '客 '}{keQi[i]}
-                </text>
-              </g>
-
-              {/* Host Qi (Inner Ring) */}
-              <g transform={`translate(${center + (radius - 85) * Math.cos(angle * Math.PI / 180)}, ${center + (radius - 85) * Math.sin(angle * Math.PI / 180)})`}>
-                <text
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                  className="text-[12px] font-bold fill-ink"
-                >
-                  主 {zhuQi[i]}
-                </text>
-              </g>
-
-              {/* Relationship Badge */}
-              <g transform={`translate(${center + (radius + 25) * Math.cos(angle * Math.PI / 180)}, ${center + (radius + 25) * Math.sin(angle * Math.PI / 180)})`}>
-                <rect x="-22" y="-9" width="44" height="18" rx="4" fill={relColor} />
-                <text textAnchor="middle" y="4" className="text-[10px] font-bold fill-white">{rel.status}</text>
-              </g>
-            </g>
-          );
-        })}
-
-        {/* Center Circle (Si Tian / Zai Quan) */}
+        {/* Center Circle */}
         <g transform={`translate(${center}, ${center})`}>
-          <circle r="69" fill="white" stroke="#555555" strokeWidth="1" className="shadow-sm" />
-          <line x1="-69" y1="0" x2="69" y2="0" stroke="#555555" strokeWidth="1" />
+          <circle r={innerRadius} fill="white" stroke="#1a1a1a" strokeWidth="1.5" />
+          <line x1={-innerRadius} y1="0" x2={innerRadius} y2="0" stroke="#1a1a1a" strokeWidth="0.5" strokeOpacity="0.3" />
           
-          <text y="-25" textAnchor="middle" className="text-[11px] fill-ink/60 font-sans font-bold">司天</text>
-          <text y="5" textAnchor="middle" className="text-[16px] font-bold fill-cinnabar">{siTian}</text>
+          {/* Si Tian Section */}
+          <text y="-45" textAnchor="middle" className="text-[12px] fill-ink/60 font-sans font-bold">司天</text>
+          <text y="-15" textAnchor="middle" className="text-[18px] font-bold fill-cinnabar">{siTian}</text>
           
-          <text y="35" textAnchor="middle" className="text-[11px] fill-ink/60 font-sans font-bold">在泉</text>
-          <text y="65" textAnchor="middle" className="text-[16px] font-bold fill-jade">{zaiQuan}</text>
+          {/* Zai Quan Section */}
+          <text y="25" textAnchor="middle" className="text-[12px] fill-ink/60 font-sans font-bold">在泉</text>
+          <text y="55" textAnchor="middle" className="text-[18px] font-bold fill-jade">{zaiQuan}</text>
         </g>
+
+        {/* Outer Labels (Solar Terms) */}
+        {steps.map((step, i) => {
+          const startAngle = 240 + (i - 2) * 60;
+          const midAngle = startAngle + 30;
+          const rad = (midAngle * Math.PI) / 180;
+          
+          return (
+            <g key={`outer-${i}`}>
+              <text
+                x={center + (radius + 20) * Math.cos(rad)}
+                y={center + (radius + 20) * Math.sin(rad)}
+                textAnchor="middle"
+                dominantBaseline="middle"
+                className="text-[12px] font-bold fill-ink/60 font-sans"
+              >
+                {step.term}
+              </text>
+            </g>
+          );
+        })}
       </svg>
 
-      {/* Decorative Compass Lines */}
-      <div className="absolute inset-0 pointer-events-none border-[1px] border-ink/5 rounded-full scale-[1.15]" />
+      {/* Decorative Outer Ring */}
+      <div className="absolute inset-0 pointer-events-none border-[1px] border-ink/5 rounded-full scale-[1.1]" />
     </div>
   );
 }
