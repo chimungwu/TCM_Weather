@@ -10,7 +10,11 @@ import {
   CloudRain, 
   Thermometer, 
   ShieldAlert,
-  ArrowRight
+  ArrowRight,
+  Scroll,
+  Table,
+  HeartPulse,
+  LibraryBig
 } from "lucide-react";
 
 export default function TheorySection() {
@@ -61,6 +65,122 @@ export default function TheorySection() {
           <p className="text-sm text-ink/60 italic">
             註：五運六氣理論雖在學術界存在爭議，但其作為一種時序醫學的探索，對於理解氣候與疾病關聯仍具備重要的臨床指導意義。
           </p>
+        </div>
+      </section>
+
+      {/* New Section: Foundation of Calculation */}
+      <section className="space-y-8">
+        <div className="flex items-center gap-4 border-l-4 border-amber-600 pl-6">
+          <div>
+            <h3 className="text-2xl font-bold">推算基礎：干支化生</h3>
+            <p className="text-ink/50 font-sans">理解運氣推算的兩大核心公式</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Ten Heavenly Stems -> Five Movements */}
+          <div className="bg-parchment p-8 rounded-3xl border border-ink/10 shadow-sm relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+              <Zap size={120} />
+            </div>
+            <h4 className="text-xl font-bold mb-6 flex items-center gap-2">
+              <Zap className="text-cinnabar" size={20} /> 天干化五運
+            </h4>
+            
+            {/* Mnemonic Box */}
+            <div className="mb-6 p-4 bg-cinnabar/5 rounded-2xl border border-cinnabar/10">
+              <div className="text-[10px] uppercase tracking-widest font-bold text-cinnabar/60 mb-2 flex items-center gap-1">
+                <Scroll size={12} /> 化運口訣
+              </div>
+              <p className="text-lg font-bold leading-relaxed tracking-widest text-ink/90">
+                甲己化土乙庚金，<br/>
+                丙辛化水丁壬木，<br/>
+                戊癸化火十天干
+              </p>
+              <p className="text-[11px] text-ink/50 font-sans mt-2 leading-tight">
+                （陽干主運太過，陰干主運不及：甲/己土、乙/庚金、丙/辛水、丁/壬木、戊/癸火）
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 font-sans">
+              {[
+                { label: '甲己', target: '化土', color: 'text-amber-600' },
+                { label: '乙庚', target: '化金', color: 'text-gray-500' },
+                { label: '丙辛', target: '化水', color: 'text-blue-600' },
+                { label: '丁壬', target: '化木', color: 'text-jade' },
+                { label: '戊癸', target: '化火', color: 'text-cinnabar' },
+              ].map((item, i) => (
+                <div key={i} className="flex items-center justify-between p-3 bg-white/50 rounded-xl border border-ink/5">
+                  <span className="font-bold text-ink/60">{item.label}</span>
+                  <span className={`font-bold ${item.color}`}>{item.target}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Twelve Earthly Branches -> Six Qi */}
+          <div className="bg-parchment p-8 rounded-3xl border border-ink/10 shadow-sm relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+              <Wind size={120} />
+            </div>
+            <h4 className="text-xl font-bold mb-6 flex items-center gap-2">
+              <Wind className="text-jade" size={20} /> 地支化六氣
+            </h4>
+
+            {/* Mnemonic Box */}
+            <div className="mb-6 p-4 bg-jade/5 rounded-2xl border border-jade/10">
+              <div className="text-[10px] uppercase tracking-widest font-bold text-jade/60 mb-2 flex items-center gap-1">
+                <Scroll size={12} /> 司天口訣
+              </div>
+              <div className="text-sm font-bold leading-relaxed tracking-widest text-ink/90 space-y-1">
+                <p>子午少陰君火心，丑未太陰濕土臨</p>
+                <p>寅申少陽相火旺，卯酉陽明燥金尋</p>
+                <p>辰戌太陽寒水主，巳亥厥陰風木行</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 font-sans">
+              {[
+                { label: '子午', target: '少陰君火', color: 'text-cinnabar' },
+                { label: '丑未', target: '太陰濕土', color: 'text-amber-600' },
+                { label: '寅申', target: '少陽相火', color: 'text-orange-600' },
+                { label: '卯酉', target: '陽明燥金', color: 'text-gray-500' },
+                { label: '辰戌', target: '太陽寒水', color: 'text-blue-600' },
+                { label: '巳亥', target: '厥陰風木', color: 'text-jade' },
+              ].map((item, i) => (
+                <div key={i} className="flex items-center justify-between p-3 bg-white/50 rounded-xl border border-ink/5">
+                  <span className="font-bold text-ink/60">{item.label}</span>
+                  <span className={`font-bold text-xs ${item.color}`}>{item.target}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* New Subsection: Three Yin and Three Yang Meanings */}
+        <div className="bg-parchment p-8 rounded-3xl border border-ink/10 shadow-sm">
+          <h4 className="text-xl font-bold mb-6 flex items-center gap-2 text-ink">
+            <CloudRain className="text-blue-500" /> 三陰三陽的氣候含義
+          </h4>
+          <p className="text-sm text-ink/70 font-sans mb-8 leading-relaxed">
+            「三陰三陽」不僅是經絡名稱，在運氣學中更代表了六種具體的氣候物理特徵與能量狀態。
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 font-sans">
+            {[
+              { name: '厥陰', type: '風', desc: '氣流動向', color: 'bg-jade/5 border-jade/20 text-jade' },
+              { name: '少陰', type: '熱', desc: '溫度升高', color: 'bg-cinnabar/5 border-cinnabar/20 text-cinnabar' },
+              { name: '太陰', type: '濕', desc: '濕度增加', color: 'bg-amber-500/5 border-amber-500/20 text-amber-600' },
+              { name: '少陽', type: '火', desc: '熱極表現', color: 'bg-orange-500/5 border-orange-500/20 text-orange-600' },
+              { name: '陽明', type: '燥', desc: '水分脫失', color: 'bg-gray-500/5 border-gray-500/20 text-gray-600' },
+              { name: '太陽', type: '寒', desc: '溫度下降', color: 'bg-blue-600/5 border-blue-600/20 text-blue-600' },
+            ].map((item, i) => (
+              <div key={i} className={`p-4 rounded-2xl border ${item.color} text-center`}>
+                <div className="text-lg font-bold mb-1">{item.name}</div>
+                <div className="text-2xl font-black mb-2">{item.type}</div>
+                <div className="text-[10px] font-sans opacity-70 uppercase tracking-tighter">{item.desc}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -201,6 +321,54 @@ export default function TheorySection() {
           </div>
         </div>
 
+        {/* New Subsection: Host-Guest Interaction */}
+        <div className="bg-parchment p-8 rounded-3xl border border-ink/10 shadow-sm">
+          <h4 className="text-xl font-bold mb-6 flex items-center gap-2 text-ink">
+            <Activity className="text-jade" /> 主客加臨：順逆判斷
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 font-sans">
+            <div className="space-y-4">
+              <div className="p-5 bg-jade/5 rounded-2xl border border-jade/10">
+                <h5 className="font-bold text-jade mb-2 flex items-center gap-2">
+                  <ArrowRight size={16} /> 順：氣候較平和
+                </h5>
+                <ul className="text-sm text-ink/80 space-y-2 list-disc pl-4">
+                  <li><strong>相生/相同：</strong>主客五行相生或相同。</li>
+                  <li><strong>客勝主：</strong>客氣剋主氣（天氣勝地氣），稱為「君臣相得」，病勢較輕。</li>
+                </ul>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div className="p-5 bg-cinnabar/5 rounded-2xl border border-cinnabar/10">
+                <h5 className="font-bold text-cinnabar mb-2 flex items-center gap-2">
+                  <ArrowRight size={16} /> 逆：氣候反常劇烈
+                </h5>
+                <ul className="text-sm text-ink/80 space-y-2 list-disc pl-4">
+                  <li><strong>主勝客：</strong>主氣剋客氣（地氣反勝天氣），稱為「下剋上」，氣候衝突大，病勢通常較重。</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* New Subsection: Balanced Qi */}
+        <div className="bg-parchment p-8 rounded-3xl border border-ink/10 shadow-sm">
+          <h4 className="text-xl font-bold mb-6 flex items-center gap-2 text-ink">
+            <Compass className="text-blue-500" /> 平氣之歲：平衡的美學
+          </h4>
+          <p className="text-sm text-ink/80 font-sans leading-relaxed mb-6">
+            並非每年都是太過或不及。當運勢受到合理的制約或資助時，會轉化為「平氣」，此年氣候最為和諧。
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="p-4 bg-white/50 rounded-xl border border-ink/5 text-sm">
+              <span className="font-bold text-ink">運太過而受抑：</span> 如木運太過但司天為金（金剋木）。
+            </div>
+            <div className="p-4 bg-white/50 rounded-xl border border-ink/5 text-sm">
+              <span className="font-bold text-ink">運不及而得助：</span> 如木運不及但歲支為卯（卯屬木）。
+            </div>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-amber-50 p-8 rounded-3xl border border-amber-200">
             <h4 className="text-xl font-bold mb-6 text-amber-900 flex items-center gap-2">
@@ -293,6 +461,39 @@ export default function TheorySection() {
           <div>
             <h3 className="text-2xl font-bold">四、 進階預警：五鬱與勝復</h3>
             <p className="text-ink/50 font-sans">當運氣失衡時，大自然自我調節的報復性機制</p>
+          </div>
+        </div>
+
+        {/* New Subsection: Organ and Disease Prediction */}
+        <div className="bg-parchment p-8 rounded-3xl border border-ink/10 shadow-sm">
+          <h4 className="text-xl font-bold mb-6 flex items-center gap-2 text-ink">
+            <HeartPulse className="text-cinnabar" /> 臨床應用：臟腑發病預測
+          </h4>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse font-sans">
+              <thead>
+                <tr className="border-b border-ink/10 text-xs uppercase tracking-wider text-ink/50">
+                  <th className="py-3 font-bold">氣候偏盛</th>
+                  <th className="py-3 font-bold">受累臟腑</th>
+                  <th className="py-3 font-bold">常見臨床表現</th>
+                </tr>
+              </thead>
+              <tbody className="text-sm">
+                {[
+                  { qi: '風氣大行', organ: '脾土受剋', symptoms: '腹瀉、肌肉痠痛、食慾不振、腹脹' },
+                  { qi: '熱氣大行', organ: '肺金受剋', symptoms: '咳嗽、氣喘、皮膚乾癢、咽喉腫痛' },
+                  { qi: '濕氣大行', organ: '腎水受剋', symptoms: '水腫、腰膝痠軟、小便不利、體重感' },
+                  { qi: '燥氣大行', organ: '肝木受剋', symptoms: '目乾、頭暈、筋脈拘急、易怒' },
+                  { qi: '寒氣大行', organ: '心火受剋', symptoms: '胸悶、心悸、畏寒、脈象遲緩' },
+                ].map((item, i) => (
+                  <tr key={i} className="border-b border-ink/5 hover:bg-ink/5 transition-colors">
+                    <td className="py-4 font-bold text-ink">{item.qi}</td>
+                    <td className="py-4 text-cinnabar font-medium">{item.organ}</td>
+                    <td className="py-4 text-ink/60 italic">{item.symptoms}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 

@@ -24,7 +24,7 @@ export default function YunQiWheel({ year, siTian, zaiQuan, zhuQi, keQi }: YunQi
     date: getSolarTermDate(year, s.term)
   }));
 
-  const size = 500;
+  const size = 600;
   const center = size / 2;
   const radius = 230;
   const midRadius = 150; // Boundary between Guest and Host
@@ -41,8 +41,8 @@ export default function YunQiWheel({ year, siTian, zaiQuan, zhuQi, keQi }: YunQi
   };
 
   return (
-    <div className="relative w-full max-w-[500px] mx-auto aspect-square">
-      <svg viewBox="0 0 500 500" className="w-full h-full font-serif">
+    <div className="relative w-full max-w-[600px] mx-auto aspect-square">
+      <svg viewBox="0 0 600 600" className="w-full h-full font-serif">
         {/* Wedges */}
         {steps.map((_, i) => {
           const startAngle = 240 + (i - 2) * 60;

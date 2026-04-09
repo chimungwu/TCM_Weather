@@ -1,59 +1,32 @@
 import React from 'react';
-import { BookOpen, ScrollText } from "lucide-react";
-
-const CLASSICS = [
-  {
-    title: "《黃帝內經·素問》運氣七篇",
-    description: "包括《天元紀大論》、《五運行大論》、《六微旨大論》、《氣交變大論》、《五常政大論》、《六元正紀大論》、《至真要大論》。是五運六氣理論的核心來源。",
-    tags: ["核心經典", "理論基礎"]
-  },
-  {
-    title: "《內經運氣分析》",
-    description: "現代學者對運氣理論的系統整理與科學分析，適合初學者入門。",
-    tags: ["現代解析", "入門推薦"]
-  },
-  {
-    title: "《中醫運氣學》",
-    description: "中醫藥院校教材，系統講解五運六氣的推算方法與臨床應用。",
-    tags: ["教材", "系統學習"]
-  },
-  {
-    title: "《三因極一病證方論》",
-    description: "宋代陳無擇著，將運氣理論與臨床辨證方藥緊密結合的代表作。",
-    tags: ["臨床應用", "宋代經典"]
-  },
-  {
-    title: "《類經圖翼》",
-    description: "明代張景岳著，對運氣學說進行了大量的圖解與總結，是學習運氣推算的必讀之作。",
-    tags: ["圖解總結", "明代經典"]
-  }
-];
+import { ScrollText, LibraryBig } from "lucide-react";
 
 export default function ReferenceLibrary() {
   return (
-    <div className="space-y-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {CLASSICS.map((book, i) => (
-          <div key={i} className="bg-white p-6 rounded-2xl border border-ink/10 hover:shadow-lg transition-shadow group">
-            <div className="flex justify-between items-start mb-4">
-              <div className="bg-parchment p-3 rounded-xl group-hover:bg-cinnabar group-hover:text-white transition-colors">
-                <BookOpen size={24} />
-              </div>
-              <div className="flex gap-2">
-                {book.tags.map((tag, j) => (
-                  <span key={j} className="text-xs uppercase tracking-wider font-sans font-bold bg-ink/5 px-3 py-1 rounded-full border border-ink/5">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <h3 className="text-xl font-bold mb-3">{book.title}</h3>
-            <p className="text-ink/70 text-base font-sans leading-relaxed">
-              {book.description}
-            </p>
+    <div className="space-y-16">
+      {/* Academic Source: Classic Works Guide */}
+      <section className="space-y-8">
+        <div className="flex items-center gap-4 border-l-4 border-ink pl-6">
+          <div>
+            <h3 className="text-2xl font-bold">學術溯源：經典著作導讀</h3>
+            <p className="text-ink/50 font-sans">深入研究運氣學說的必讀文獻</p>
           </div>
-        ))}
-      </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 font-sans">
+          {[
+            { title: '《素問·運氣七篇》', author: '王冰 (補入)', desc: '理論的源頭，包含天元紀大論、五運行大論等，奠定了運氣學說的基石。' },
+            { title: '《類經圖翼》', author: '張景岳', desc: '以大量圖表解析運氣規律，將複雜的推算視覺化，是極佳的學習工具。' },
+            { title: '《三因極一病證方論》', author: '陳無擇', desc: '首創將運氣理論與臨床方劑結合，提出「十六年運氣方」，極具實戰價值。' },
+          ].map((book, i) => (
+            <div key={i} className="bg-parchment p-6 rounded-2xl border border-ink/10 hover:border-ink/30 transition-all group">
+              <LibraryBig className="text-ink/20 group-hover:text-ink/40 mb-4 transition-colors" size={32} />
+              <h5 className="font-bold text-lg mb-2">{book.title}</h5>
+              <div className="text-xs text-ink/40 font-bold uppercase mb-3">作者：{book.author}</div>
+              <p className="text-sm text-ink/60 leading-relaxed">{book.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       <div className="bg-cinnabar/5 p-8 rounded-3xl border border-cinnabar/10">
         <div className="flex items-center gap-3 mb-6">
