@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { 
   Calendar, 
   Info, 
@@ -13,7 +13,9 @@ import {
   AlertTriangle,
   Stethoscope,
   Clock,
-  BookOpen
+  BookOpen,
+  Activity,
+  X
 } from "lucide-react";
 import { 
   getStemBranch, 
@@ -37,6 +39,7 @@ import YunQiWheel from './YunQiWheel';
 export default function CalculationTool() {
   const [year, setYear] = useState(new Date().getFullYear());
   const [viewMode, setViewMode] = useState<'table' | 'wheel'>('wheel');
+  const [selectedStepIdx, setSelectedStepIdx] = useState<number | null>(null);
   const sb = getStemBranch(year);
   const daYunInfo = getDaYun(sb.stem);
   const stzq = getSiTianZaiQuan(sb.branch);
@@ -301,15 +304,24 @@ export default function CalculationTool() {
                             const rel = getRelationshipDetail(ZHU_QI_STEPS[i], keQiSteps[i]);
                             return (
                               <>
-                                <div className="flex items-center gap-3">
-                                  <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                                    rel.status === '順' ? 'bg-jade/10 text-jade border border-jade/20' : 
-                                    rel.status === '逆' ? 'bg-cinnabar/10 text-cinnabar border border-cinnabar/20' : 
-                                    'bg-ink/5 text-ink/60 border border-ink/10'
-                                  }`}>
-                                    {rel.status}
-                                  </span>
-                                  <span className="text-ink/80 font-bold text-sm">{rel.reason}</span>
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-3">
+                                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                                      rel.status === '順' ? 'bg-jade/10 text-jade border border-jade/20' : 
+                                      rel.status === '逆' ? 'bg-cinnabar/10 text-cinnabar border border-cinnabar/20' : 
+                                      'bg-ink/5 text-ink/60 border border-ink/10'
+                                    }`}>
+                                      {rel.status}
+                                    </span>
+                                    <span className="text-ink/80 font-bold text-sm">{rel.reason}</span>
+                                  </div>
+                                  <button 
+                                    onClick={() => setSelectedStepIdx(i)}
+                                    className="flex items-center gap-1 text-xs font-bold text-jade hover:text-jade/80 transition-colors bg-jade/5 px-3 py-1.5 rounded-full border border-jade/10"
+                                  >
+                                    <Activity size={12} />
+                                    微觀分析
+                                  </button>
                                 </div>
                                 <div className="flex items-start gap-2 text-sm text-ink/60 leading-relaxed font-serif">
                                   <AlertTriangle size={14} className={`mt-0.5 shrink-0 ${rel.isCompatible ? 'text-jade' : 'text-amber-500'}`} />
@@ -606,6 +618,197 @@ export default function CalculationTool() {
           </div>
         </div>
       </div>
+      {/* Micro Analysis Modal */}
+      <AnimatePresence>
+        {selectedStepIdx !== null && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedStepIdx(null)}
+              className="absolute inset-0 bg-ink/60 backdrop-blur-sm"
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-5xl bg-parchment rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+            >
+              <div className="bg-ink text-parchment p-6 flex items-center justify-between shrink-0">
+                <div className="flex items-center gap-4">
+                  <div className="bg-white/10 p-2 rounded-xl">
+                    <Activity size={24} />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold">{yearlySteps[selectedStepIdx].name}：十二天微觀氣位分析</h3>
+                    <p className="text-xs text-parchment/60 font-sans uppercase tracking-widest mt-1">
+                      {yearlySteps[selectedStepIdx].term} ({yearlySteps[selectedStepIdx].startDate}) - {yearlySteps[selectedStepIdx].endTerm}
+                    </p>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setSelectedStepIdx(null)}
+                  className="p-2 hover:bg-white/10 rounded-full transition-colors"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto p-6 md:p-8">
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
+                  {yearlySteps[selectedStepIdx].microAnalysis?.map((sub, idx) => (
+                    <div 
+                      key={idx} 
+                      className={`p-5 rounded-2xl border-2 transition-all ${
+                        sub.status === '預警' 
+                          ? 'bg-cinnabar/5 border-cinnabar/20 shadow-inner' 
+                          : 'bg-white border-ink/5 shadow-sm'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex flex-col">
+                          <span className="text-[10px] font-bold text-ink/40 uppercase tracking-tighter">第 {sub.index} 小步</span>
+                          <span className="text-[10px] font-bold text-jade">{sub.dateRange}</span>
+                        </div>
+                        {sub.status === '預警' && (
+                          <AlertTriangle size={14} className="text-cinnabar" />
+                        )}
+                      </div>
+
+                      <div className="flex flex-col items-center gap-3 mb-4">
+                        <div className="flex items-center gap-2">
+                          <div className="text-center">
+                            <div className="text-[9px] text-ink/30 font-bold uppercase mb-1">主</div>
+                            <div className="w-10 h-10 rounded-lg bg-jade/10 text-jade flex items-center justify-center font-bold border border-jade/20">
+                              {sub.main}
+                            </div>
+                          </div>
+                          <div className="pt-3">
+                            <ArrowRight size={12} className="text-ink/20" />
+                          </div>
+                          <div className="text-center">
+                            <div className="text-[9px] text-cinnabar/30 font-bold uppercase mb-1">客</div>
+                            <div className="w-10 h-10 rounded-lg bg-cinnabar/10 text-cinnabar flex items-center justify-center font-bold border border-cinnabar/20">
+                              {sub.guest}
+                            </div>
+                          </div>
+                        </div>
+                        <div className={`text-[10px] font-bold px-2 py-0.5 rounded-full border text-center ${
+                          sub.status === '預警' ? 'bg-cinnabar text-white border-cinnabar' : 
+                          sub.status === '強化' ? 'bg-amber-400 text-ink border-amber-500' :
+                          'bg-jade/10 text-jade border-jade/20'
+                        }`}>
+                          {sub.status === '穩定' && "順：穩定模式"}
+                          {sub.status === '強化' && "亢：強化模式"}
+                          {sub.status === '預警' && "逆：衝突模式"}
+                          <span className="ml-1 opacity-70">({sub.relationship})</span>
+                        </div>
+                        {sub.status === '預警' && (
+                          <div className="text-[9px] font-bold text-cinnabar mt-1 text-center">
+                            {sub.relType === '客剋主' ? "氣候強行干擾現狀" : "天氣受壓制，悶而不發"}
+                          </div>
+                        )}
+                        <div className="text-[9px] text-ink/40 text-center leading-tight">
+                          {sub.relType === '順' && "氣候穩定，發病多按常理。"}
+                          {sub.relType === '亢' && "能量重疊，需防亢害傷正。"}
+                          {sub.relType === '逆' && "氣候劇變，病情反覆。"}
+                          {sub.relType === '主剋客' && "天氣想變卻被地氣壓制，悶而不發。"}
+                          {sub.relType === '客剋主' && "外來氣候強行改變現狀，發病最急。"}
+                        </div>
+                      </div>
+
+                      <div className="space-y-3 border-t border-ink/5 pt-4">
+                        <div>
+                          <div className="text-[10px] font-bold text-ink/40 uppercase mb-1">氣候特徵</div>
+                          <p className="text-xs text-ink/80 leading-relaxed font-serif">{sub.climate}</p>
+                        </div>
+                        <div>
+                          <div className="text-[10px] font-bold text-ink/40 uppercase mb-1">臨床建議</div>
+                          <p className="text-xs text-ink/60 leading-relaxed font-serif italic">{sub.clinical}</p>
+                        </div>
+                      </div>
+
+                      {sub.sop && (
+                        <div className="mt-4 pt-4 border-t border-ink/5 space-y-3">
+                          <div className={`flex items-center gap-2 ${
+                            sub.sop.mode === '衝突' ? 'text-cinnabar' : 
+                            sub.sop.mode === '強化' ? 'text-amber-600' : 'text-jade'
+                          }`}>
+                            <Stethoscope size={14} />
+                            <span className="text-xs font-bold">{sub.sop.title}</span>
+                          </div>
+                          <div className="space-y-2">
+                            <div className="bg-white p-2 rounded-lg border border-ink/5">
+                              <div className="text-[9px] font-bold text-ink/40 uppercase mb-1">病機</div>
+                              <p className="text-xs text-ink/80">{sub.sop.pathology}</p>
+                            </div>
+                            
+                            {/* 三行法 */}
+                            <div className="space-y-1.5">
+                              <div className="flex gap-2">
+                                <span className="shrink-0 text-[10px] font-bold text-ink/30 bg-ink/5 px-1.5 py-0.5 rounded h-fit">症狀</span>
+                                <p className="text-xs text-ink/70 font-medium">{sub.sop.symptoms}</p>
+                              </div>
+                              <div className="flex gap-2">
+                                <span className="shrink-0 text-[10px] font-bold text-jade/60 bg-jade/5 px-1.5 py-0.5 rounded h-fit">加減</span>
+                                <p className="text-xs text-jade font-bold">{sub.sop.formula}</p>
+                              </div>
+                              <div className="flex gap-2">
+                                <span className="shrink-0 text-[10px] font-bold text-cinnabar/60 bg-cinnabar/5 px-1.5 py-0.5 rounded h-fit">禁忌</span>
+                                <p className="text-xs text-cinnabar/80 italic">{sub.sop.contraindication}</p>
+                              </div>
+                            </div>
+
+                            <div className="mt-2 pt-2 border-t border-ink/5">
+                              <div className="text-[9px] font-bold text-ink/40 uppercase mb-1">對策</div>
+                              <p className="text-xs text-ink/80 font-bold text-jade">{sub.sop.strategy}</p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="bg-ink/5 p-6 rounded-2xl border border-ink/10">
+                  <h4 className="font-bold text-ink mb-4 flex items-center gap-2">
+                    <Info size={18} className="text-jade" />
+                    微觀判定邏輯說明
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+                    <div className="space-y-3">
+                      <p className="text-ink/70 leading-relaxed">
+                        <strong className="text-ink">1. 時段劃分：</strong> 將每一步（60天）等分為五個小階段，每階段約 12 天。這能幫助醫者更精確地掌握氣候的微觀波動。
+                      </p>
+                      <p className="text-ink/70 leading-relaxed">
+                        <strong className="text-ink">2. 五主運（固定）：</strong> 每一氣位中恆定依照 <span className="text-jade font-bold">木 → 火 → 土 → 金 → 水</span> 的順序流轉，代表該時段的基礎氣候背景。
+                      </p>
+                    </div>
+                    <div className="space-y-3">
+                      <p className="text-ink/70 leading-relaxed">
+                        <strong className="text-ink">3. 五客運（變動）：</strong> 起始點由該年的「中運」決定。例如 2026 丙年為水運，第一小步客運即為水，後續依序流轉。
+                      </p>
+                      <p className="text-ink/70 leading-relaxed">
+                        <strong className="text-ink">4. 生剋判定：</strong> 若客生主或客主同氣，則氣候穩定；若客克主或主克客，則氣候劇變，視為<strong>「微觀預警點」</strong>。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-parchment border-t border-ink/5 p-6 flex justify-end shrink-0">
+                <button 
+                  onClick={() => setSelectedStepIdx(null)}
+                  className="px-8 py-2 bg-ink text-parchment rounded-xl font-bold hover:bg-ink/90 transition-all"
+                >
+                  關閉分析
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

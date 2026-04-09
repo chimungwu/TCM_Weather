@@ -131,13 +131,18 @@ export const getSolarTermDate = (year: number, term: string): string => {
 };
 
 export const getYearlySteps = (year: number) => {
-  return TIME_STEPS.map(step => {
+  return TIME_STEPS.map((step, i) => {
     const startDate = getSolarTermDate(year, step.term);
     const endDate = getSolarTermDate(year, step.endTerm);
+    const sb = getStemBranch(year);
+    const daYunInfo = getDaYun(sb.stem);
+    const microAnalysis = getMicroQiAnalysis(year, i, daYunInfo.movement, startDate);
+    
     return {
       ...step,
       dates: `${startDate} - ${endDate}`,
-      startDate
+      startDate,
+      microAnalysis
     };
   });
 };
@@ -515,6 +520,311 @@ export const getPulseGuidance = (siTian: string, zaiQuan: string) => {
     siTian: pulseMap[siTian],
     zaiQuan: pulseMap[zaiQuan]
   };
+};
+
+export interface MicroQiSOP {
+  mode: '衝突' | '穩定' | '強化';
+  title: string;
+  pathology: string;
+  symptoms: string;
+  strategy: string;
+  formula: string;
+  contraindication: string;
+}
+
+export const getMicroSOP = (main: string, guest: string): MicroQiSOP => {
+  const overcomeMap: Record<string, string> = { '木': '土', '土': '水', '水': '火', '火': '金', '金': '木' };
+  const genMap: Record<string, string> = { '木': '火', '火': '土', '土': '金', '金': '水', '水': '木' };
+  
+  // 模式三：強化模式 (同氣)
+  if (main === guest) {
+    const contraMap: Record<string, string> = {
+      '木': '忌過用溫燥、辛散之品。',
+      '火': '忌溫補、辛辣、厚膩之物。',
+      '土': '忌滋膩、甘甜、生冷。',
+      '金': '忌過用寒涼、苦寒冰伏。',
+      '水': '忌生冷、苦寒、久坐濕地。'
+    };
+    const symptomsMap: Record<string, string> = {
+      '木': '頭暈目眩、煩躁易怒、筋脈拘急。',
+      '火': '口舌生瘡、心煩失眠、便秘尿黃。',
+      '土': '脘腹脹滿、身重倦怠、便溏不爽。',
+      '金': '鼻咽乾燥、乾咳少痰、皮膚乾癢。',
+      '水': '畏寒肢冷、小便清長、關節冷痛。'
+    };
+    return {
+      mode: '強化',
+      title: `【強化模式】（雙${main}同氣）`,
+      pathology: `${main}屬性能量重疊，易生亢害。`,
+      symptoms: symptomsMap[main],
+      strategy: '宜「平調亢害」，防範屬性過盛。',
+      formula: main === '火' ? '黃連、梔子、連翹' : (main === '土' ? '蒼朮、茯苓、陳皮' : '隨證加減'),
+      contraindication: contraMap[main]
+    };
+  }
+
+  // 模式一：衝突與反侮 (相剋關係)
+  let conflict: string | null = null;
+  if (overcomeMap[main] === guest || overcomeMap[guest] === main) {
+    if ((main === '木' && guest === '土') || (main === '土' && guest === '木')) conflict = '木土';
+    if ((main === '土' && guest === '水') || (main === '水' && guest === '土')) conflict = '土水';
+    if ((main === '水' && guest === '火') || (main === '火' && guest === '水')) conflict = '水火';
+    if ((main === '火' && guest === '金') || (main === '金' && guest === '火')) conflict = '火金';
+    if ((main === '金' && guest === '木') || (main === '木' && guest === '金')) conflict = '金木';
+  }
+
+  if (conflict) {
+    const templates: Record<string, Omit<MicroQiSOP, 'mode'>> = {
+      '木土': {
+        title: '【木土衝突】（肝脾不和）',
+        pathology: '肝木乘土，中焦失和。',
+        symptoms: '腹脹、納呆、疲泄、情緒鬱怒、便溏。',
+        strategy: '宜「疏肝健脾、培土泄木」。',
+        formula: '柴胡、白朮、白芍。',
+        contraindication: '忌過用辛燥傷陰，或過用滋膩礙脾。'
+      },
+      '土水': {
+        title: '【土水衝突】（脾腎濕壅）',
+        pathology: '濕土剋水，水飲內停。',
+        symptoms: '浮腫、小便不利、身重如裹、腰痠、帶下增多。',
+        strategy: '宜「運脾利水、溫陽化濕」。',
+        formula: '澤瀉、豬苓、茯苓。',
+        contraindication: '忌生冷肥甘，以免助濕。'
+      },
+      '水火': {
+        title: '【水火衝突】（心腎不交/寒熱錯雜）',
+        pathology: '寒水凌火，心陽受抑。',
+        symptoms: '心悸、胸悶、冷汗、肢冷、血壓波動。',
+        strategy: '宜「溫陽化氣、守護心火」。',
+        formula: '桂枝、乾薑、肉桂。',
+        contraindication: '忌過用苦寒清熱，以免傷及心陽。'
+      },
+      '火金': {
+        title: '【火金衝突】（熱傷肺絡）',
+        pathology: '火淫勝金，燥熱傷肺。',
+        symptoms: '乾咳、咽痛、鼻衄、痰黃黏稠、皮膚紅疹。',
+        strategy: '宜「清熱潤肺、宣發肺氣」。',
+        formula: '桑葉、石膏、黃芩。',
+        contraindication: '忌溫燥補益，以免火上澆油。'
+      },
+      '金木': {
+        title: '【金木衝突】（燥勝風動）',
+        pathology: '金氣肅殺，反侮肝木。',
+        symptoms: '乾咳無痰、脅肋隱痛、目乾澀、筋脈拘急抽搐。',
+        strategy: '宜「潤肺養肝、息風理氣」。',
+        formula: '沙參、麥冬、天麻。',
+        contraindication: '忌過用辛散，以免加重燥氣傷陰。'
+      }
+    };
+    return { ...templates[conflict], mode: '衝突' };
+  }
+
+  // 模式二：和諧共生 (相生關係)
+  const stableTemplates: Record<string, Omit<MicroQiSOP, 'mode' | 'title' | 'strategy'>> = {
+    '木': {
+      pathology: '氣候平順，生生不息。受風木滋養，氣機條達。',
+      symptoms: '慢性舊疾穩定，體力恢復較快。需防微風動搖，見輕微頭暈、噴嚏。',
+      formula: '薄荷、桑葉。',
+      contraindication: '無特殊禁忌。注意飲食規律，避免過度耗損肝氣。'
+    },
+    '火': {
+      pathology: '氣候平順，生生不息。受火氣溫養，陽氣布散。',
+      symptoms: '慢性舊疾穩定，體力恢復較快。需防熱氣微擾，見口乾、午後心煩。',
+      formula: '竹葉、連翹。',
+      contraindication: '無特殊禁忌。注意規律作息，避免熬夜助火。'
+    },
+    '土': {
+      pathology: '氣候平順，生生不息。受土氣厚植，中焦穩固。',
+      symptoms: '慢性舊疾穩定，體力恢復較快。需防濕氣微壅，見胃口稍減、身重。',
+      formula: '藿香、佩蘭。',
+      contraindication: '無特殊禁忌。注意飲食節制，避免過食生冷滋膩。'
+    },
+    '金': {
+      pathology: '氣候平順，生生不息。受金氣收斂，肺氣清肅。',
+      symptoms: '慢性舊疾穩定，體力恢復較快。需防燥氣微傷，見乾咳、皮膚微癢。',
+      formula: '麥冬、沙參。',
+      contraindication: '無特殊禁忌。注意居家通風，保持環境適度濕潤。'
+    },
+    '水': {
+      pathology: '氣候平順，生生不息。受水氣滋潤，精氣內藏。',
+      symptoms: '慢性舊疾穩定，體力恢復較快。需防寒氣微襲，見關節痠重、畏寒。',
+      formula: '茯苓、生薑。',
+      contraindication: '無特殊禁忌。注意保暖避寒，保護脾腎陽氣。'
+    }
+  };
+
+  const guestAttr = guest as keyof typeof stableTemplates;
+  const template = stableTemplates[guestAttr] || stableTemplates['木'];
+
+  return {
+    mode: '穩定',
+    title: '【穩定模式】（和諧共生）',
+    strategy: '宜「順時養生」。',
+    ...template
+  };
+};
+
+export const getMicroQiAnalysis = (year: number, stepIdx: number, daYun: string, startDateStr: string) => {
+  const mainMovements = ['木', '火', '土', '金', '水'];
+  const startIdx = MOVEMENTS.indexOf(daYun);
+  const guestMovements = [];
+  for (let i = 0; i < 5; i++) {
+    guestMovements.push(MOVEMENTS[(startIdx + i) % 5]);
+  }
+
+  // Parse start date (e.g., "1月20日")
+  const match = startDateStr.match(/(\d+)月(\d+)日/);
+  let currentMonth = match ? parseInt(match[1]) : 1;
+  let currentDay = match ? parseInt(match[2]) : 20;
+
+  const getNextDateRange = (startDay: number, startMonth: number, duration: number) => {
+    const daysInMonth: Record<number, number> = {
+      1: 31, 2: (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) ? 29 : 28,
+      3: 31, 4: 30, 5: 31, 6: 30, 7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31
+    };
+
+    const formatDate = (m: number, d: number) => `${m}/${d < 10 ? '0' + d : d}`;
+    
+    const startStr = formatDate(startMonth, startDay);
+    
+    let endDay = startDay + duration - 1;
+    let endMonth = startMonth;
+    
+    if (endDay > daysInMonth[endMonth]) {
+      endDay -= daysInMonth[endMonth];
+      endMonth = endMonth === 12 ? 1 : endMonth + 1;
+    }
+    
+    const endStr = formatDate(endMonth, endDay);
+    
+    // Update for next iteration
+    let nextDay = endDay + 1;
+    let nextMonth = endMonth;
+    if (nextDay > daysInMonth[nextMonth]) {
+      nextDay = 1;
+      nextMonth = nextMonth === 12 ? 1 : nextMonth + 1;
+    }
+    
+    return { range: `${startStr} - ${endStr}`, nextDay, nextMonth };
+  };
+
+  // 2026 丙午年 初之氣 特殊範本 (User provided)
+  const is2026FirstQi = year === 2026 && stepIdx === 0;
+
+  const subSteps = [];
+  let nextD = currentDay;
+  let nextM = currentMonth;
+
+  for (let i = 0; i < 5; i++) {
+    const main = mainMovements[i];
+    const guest = guestMovements[i];
+    const { range, nextDay, nextMonth } = getNextDateRange(nextD, nextM, 12);
+    nextD = nextDay;
+    nextM = nextMonth;
+    
+    // 生剋判定
+    const genMap: Record<string, string> = { '木': '火', '火': '土', '土': '金', '金': '水', '水': '木' };
+    const overcomeMap: Record<string, string> = { '木': '土', '土': '水', '水': '火', '火': '金', '金': '木' };
+
+    let status: '穩定' | '預警' | '強化' = '穩定';
+    let relationship = '';
+    let relType: '順' | '逆' | '主剋客' | '客剋主' | '亢' = '順';
+
+    if (guest === main) {
+      status = '強化';
+      relationship = '氣主同氣';
+      relType = '亢';
+    } else if (genMap[guest] === main || genMap[main] === guest) {
+      status = '穩定';
+      relationship = genMap[guest] === main ? '客生主' : '主生客';
+      relType = '順';
+    } else if (overcomeMap[guest] === main) {
+      status = '預警';
+      relationship = '客剋主';
+      relType = '客剋主';
+    } else if (overcomeMap[main] === guest) {
+      status = '預警';
+      relationship = '主剋客';
+      relType = '主剋客';
+    } else {
+      status = '預警';
+      relationship = '相剋';
+      relType = '逆';
+    }
+
+    const sop = getMicroSOP(main, guest);
+
+    // 2026 範本內容 (修正為通用寫法，避免矛盾)
+    let climate = '';
+    let clinical = '';
+
+    if (is2026FirstQi) {
+      const templates = [
+        { climate: '水生木旺，氣候平順滋養，風氣漸起與春季主體一致。', clinical: '宜順時養生，注意肝氣疏泄，預防春季過敏初發。' },
+        { climate: '木生火旺，氣候穩定溫養，陽氣布散中帶有微風。', clinical: '宜順時養生，防熱氣微擾，注意規律作息。' },
+        { climate: '火生土旺，氣候平順厚植，中焦穩固中帶有溫潤。', clinical: '宜順時養生，防濕氣微壅，注意飲食節制。' },
+        { climate: '土生金旺，氣候穩定收斂，肺氣清肅中帶有土氣厚實。', clinical: '宜順時養生，防燥氣微傷，注意環境濕潤。' },
+        { climate: '金生水旺，氣候穩定滋潤，精氣內藏中帶有清冷肅降之氣。', clinical: '宜順時養生，防寒氣微襲，注意保暖避寒。' }
+      ];
+      climate = templates[i].climate;
+      clinical = templates[i].clinical;
+    } else {
+      const climateMap: Record<string, string> = {
+        '木': '風氣流行，草木萌動。',
+        '火': '熱氣漸升，陽光明媚。',
+        '土': '濕氣瀰漫，雲霧較多。',
+        '金': '氣候乾燥，清涼肅殺。',
+        '水': '寒氣反撲，氣溫驟降。'
+      };
+
+      const strongFeatures: Record<string, string> = {
+        '木': '風木肆虐、悶而不發',
+        '火': '暑熱煎熬、熱逼肺金',
+        '土': '濕重如裹、泥濘鬱悶',
+        '金': '清涼肅殺、萬物枯焦',
+        '水': '氣溫驟降、寒水凌火'
+      };
+      
+      if (status === '穩定' || status === '強化') {
+        climate = `氣候平順滋養，${climateMap[guest]}`;
+        clinical = `宜順時養生，注意${guest}氣之溫養。`;
+      } else {
+        const strong = overcomeMap[guest] === main ? guest : main;
+        const weak = strong === guest ? main : guest;
+        const dynamicDesc = relType === '客剋主' ? '氣候強行干擾現狀' : '天氣受壓制，悶而不發';
+        
+        climate = `氣候劇變衝突，${strong} 強壓 ${weak}。氣候呈現「${strongFeatures[strong]}」之象，${dynamicDesc}。`;
+        clinical = `注意防範${relationship}導致的氣候不相得，強調衝突預警。`;
+      }
+    }
+
+    // 4. 自動檢查機制 (Audit Logic)
+    const conflictKeywords = ['剋', '衝突', '預警', '逆', '不相得', '反撲'];
+    if (status === '穩定' || status === '強化') {
+      if (conflictKeywords.some(k => climate.includes(k))) {
+        climate = `氣候平順滋養，氣候背景穩定。`;
+      }
+      if (conflictKeywords.some(k => clinical.includes(k))) {
+        clinical = `宜順時養生，注意氣候之滋養。`;
+      }
+    }
+
+    subSteps.push({
+      index: i + 1,
+      main,
+      guest,
+      status,
+      relationship,
+      relType,
+      sop,
+      climate,
+      clinical,
+      dateRange: range,
+      days: `${i * 12 + 1} ~ ${(i + 1) * 12} 天`
+    });
+  }
+
+  return subSteps;
 };
 
 export const getSanYinFangGuidance = (stem: string, branch: string) => {
