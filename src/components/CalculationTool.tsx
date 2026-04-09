@@ -32,7 +32,8 @@ import {
   getMovementSteps,
   getYunQiStrength,
   getPulseGuidance,
-  getAdvancedWarnings
+  getAdvancedWarnings,
+  getMacroAnalysis
 } from '../types';
 import YunQiWheel from './YunQiWheel';
 
@@ -301,33 +302,46 @@ export default function CalculationTool() {
                       <td className="p-5 border-b border-ink/5">
                         <div className="flex flex-col gap-3">
                           {(() => {
+                            const analysis = getMacroAnalysis(step.name, ZHU_QI_STEPS[i], keQiSteps[i]);
                             const rel = getRelationshipDetail(ZHU_QI_STEPS[i], keQiSteps[i]);
                             return (
-                              <>
+                              <div className="space-y-4">
+                                {/* 1. Status Label & Micro Analysis Button */}
                                 <div className="flex items-center justify-between">
-                                  <div className="flex items-center gap-3">
-                                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                                  <div className="flex items-center gap-2">
+                                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
                                       rel.status === '順' ? 'bg-jade/10 text-jade border border-jade/20' : 
-                                      rel.status === '逆' ? 'bg-cinnabar/10 text-cinnabar border border-cinnabar/20' : 
-                                      'bg-ink/5 text-ink/60 border border-ink/10'
+                                      'bg-cinnabar/10 text-cinnabar border border-cinnabar/20'
                                     }`}>
                                       {rel.status}
                                     </span>
-                                    <span className="text-ink/80 font-bold text-sm">{rel.reason}</span>
+                                    <span className="text-xs font-bold text-ink/80">{analysis.statusLabel}</span>
                                   </div>
                                   <button 
                                     onClick={() => setSelectedStepIdx(i)}
-                                    className="flex items-center gap-1 text-xs font-bold text-jade hover:text-jade/80 transition-colors bg-jade/5 px-3 py-1.5 rounded-full border border-jade/10"
+                                    className="flex items-center gap-1 text-[10px] font-bold text-jade hover:text-jade/80 transition-colors bg-jade/5 px-2 py-1 rounded-full border border-jade/10"
                                   >
-                                    <Activity size={12} />
+                                    <Activity size={10} />
                                     微觀分析
                                   </button>
                                 </div>
-                                <div className="flex items-start gap-2 text-sm text-ink/60 leading-relaxed font-serif">
-                                  <AlertTriangle size={14} className={`mt-0.5 shrink-0 ${rel.isCompatible ? 'text-jade' : 'text-amber-500'}`} />
-                                  <span>{getClinicalAdvice(ZHU_QI_STEPS[i], keQiSteps[i])}</span>
+                                
+                                {/* 2. Climate Context */}
+                                <div className="bg-ink/5 p-3 rounded-xl border border-ink/5">
+                                  <div className="text-[9px] font-bold text-ink/40 uppercase mb-1 flex items-center gap-1">
+                                    <Wind size={10} /> 氣候基調描述
+                                  </div>
+                                  <p className="text-xs text-ink/80 leading-relaxed font-serif">{analysis.climateContext}</p>
                                 </div>
-                              </>
+
+                                {/* 3. Clinical Outlook */}
+                                <div className="bg-jade/5 p-3 rounded-xl border border-jade/10">
+                                  <div className="text-[9px] font-bold text-jade/60 uppercase mb-1 flex items-center gap-1">
+                                    <Stethoscope size={10} /> 臨床大綱建議
+                                  </div>
+                                  <p className="text-xs text-jade/80 leading-relaxed font-serif italic">{analysis.clinicalOutlook}</p>
+                                </div>
+                              </div>
                             );
                           })()}
                         </div>

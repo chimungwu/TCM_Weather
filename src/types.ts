@@ -148,22 +148,11 @@ export const getYearlySteps = (year: number) => {
 };
 
 export const getRelationshipDetail = (zhu: string, ke: string): { 
-  status: '順' | '逆' | '和', 
-  reason: string,
+  status: '順' | '逆', 
+  compatibility: '相得' | '不相得',
+  relationship: string,
   isCompatible: boolean 
 } => {
-  if (zhu === ke) {
-    return { status: '和', reason: '氣位相同，氣候較為平和。', isCompatible: true };
-  }
-
-  // Special Fire Cases
-  if (ke === '少陰君火' && zhu === '少陽相火') {
-    return { status: '順', reason: '君火加臨相火（子順母下），為順，但需防熱氣過亢。', isCompatible: true };
-  }
-  if (ke === '少陽相火' && zhu === '少陰君火') {
-    return { status: '逆', reason: '相火加臨君火（子臨母上），為逆，氣候易見劇變。', isCompatible: false };
-  }
-
   const elements: Record<string, string> = {
     '厥陰風木': '木',
     '少陰君火': '火',
@@ -179,24 +168,113 @@ export const getRelationshipDetail = (zhu: string, ke: string): {
   const genMap: Record<string, string> = { '木': '火', '火': '土', '土': '金', '金': '水', '水': '木' };
   const overcomeMap: Record<string, string> = { '木': '土', '土': '水', '水': '火', '火': '金', '金': '木' };
 
-  // 1. 主氣生客氣 (Ni)
-  if (genMap[zhuEl] === keEl) {
-    return { status: '逆', reason: '主氣生客氣（子臨母上），為逆。', isCompatible: false };
+  // Special Fire Cases
+  if (ke === '少陰君火' && zhu === '少陽相火') {
+    return { status: '順', compatibility: '相得', relationship: '君火加臨相火', isCompatible: true };
   }
-  // 2. 客氣生主氣 (Shun)
-  if (genMap[keEl] === zhuEl) {
-    return { status: '順', reason: '客氣生主氣（子順母下），為順。', isCompatible: true };
-  }
-  // 3. 主氣克客氣 (Ni)
-  if (overcomeMap[zhuEl] === keEl) {
-    return { status: '逆', reason: '主氣克客氣，不相得，為逆。', isCompatible: false };
-  }
-  // 4. 客氣克主氣 (Shun)
-  if (overcomeMap[keEl] === zhuEl) {
-    return { status: '順', reason: '客氣克主氣，相得，為順。', isCompatible: true };
+  if (ke === '少陽相火' && zhu === '少陰君火') {
+    return { status: '逆', compatibility: '不相得', relationship: '相火加臨君火', isCompatible: false };
   }
 
-  return { status: '和', reason: '氣候相對平穩。', isCompatible: true };
+  // 同氣
+  if (zhu === ke || zhuEl === keEl) {
+    return { 
+      status: '順', 
+      compatibility: '相得', 
+      relationship: '同氣',
+      isCompatible: true 
+    };
+  }
+
+  // 相生
+  if (genMap[zhuEl] === keEl) {
+    return { 
+      status: '順', 
+      compatibility: '相得', 
+      relationship: '主生客',
+      isCompatible: true 
+    };
+  }
+  if (genMap[keEl] === zhuEl) {
+    return { 
+      status: '順', 
+      compatibility: '相得', 
+      relationship: '客生主',
+      isCompatible: true 
+    };
+  }
+
+  // 相剋
+  if (overcomeMap[zhuEl] === keEl) {
+    return { 
+      status: '順', 
+      compatibility: '不相得', 
+      relationship: '主剋客',
+      isCompatible: false 
+    };
+  }
+  if (overcomeMap[keEl] === zhuEl) {
+    return { 
+      status: '逆', 
+      compatibility: '不相得', 
+      relationship: '客剋主',
+      isCompatible: false 
+    };
+  }
+
+  return { status: '順', compatibility: '相得', relationship: '相平', isCompatible: true };
+};
+
+export const getMacroAnalysis = (stepName: string, zhu: string, ke: string) => {
+  const rel = getRelationshipDetail(zhu, ke);
+  const elements: Record<string, string> = {
+    '厥陰風木': '木',
+    '少陰君火': '火',
+    '少陽相火': '火',
+    '太陰濕土': '土',
+    '陽明燥金': '金',
+    '太陽寒水': '水'
+  };
+  const zhuEl = elements[zhu];
+  const keEl = elements[ke];
+
+  // 1. Status Label
+  const statusLabel = `${stepName}：【${rel.status}】${rel.compatibility} (${rel.relationship})`;
+
+  // 2. Climate Context
+  const climateContext = `本步位受 ${ke} 加臨 ${zhu}，氣候呈現 ${
+    rel.compatibility === '相得' && rel.status === '順' 
+      ? '氣候交替平穩，天人感應順遂，發病規律多按常理。' 
+      : '氣候交替劇烈，客主相搏，需防範非常規之氣候突變。'
+  }`;
+
+  // 3. Clinical Outlook
+  const outlookMap: Record<string, { goal: string; method: string }> = {
+    '木': { goal: '舒肝理氣', method: '平肝之法' },
+    '火': { goal: '清熱降火', method: '清心瀉火之法' },
+    '土': { goal: '健脾化濕', method: '運脾理氣之法' },
+    '金': { goal: '潤肺清燥', method: '滋陰潤燥之法' },
+    '水': { goal: '溫陽化氣', method: '補腎助陽之法' }
+  };
+  
+  const varMap: Record<string, string> = {
+    '木': '風氣之擾',
+    '火': '寒熱之變',
+    '土': '濕氣之壅',
+    '金': '燥氣之傷',
+    '水': '寒邪之侵'
+  };
+
+  const zhuData = outlookMap[zhuEl] || { goal: '辨證論治', method: '隨證加減' };
+  const keVar = varMap[keEl] || '氣候之變';
+
+  const clinicalOutlook = `大局宜 ${zhuData.goal}。醫師處方宜守 ${zhuData.method}，並隨時監控 ${keVar}。`;
+
+  return {
+    statusLabel,
+    climateContext,
+    clinicalOutlook
+  };
 };
 
 export const getSuWenGuidance = (qi: string) => {
