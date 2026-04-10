@@ -441,7 +441,7 @@ export default function CalculationTool() {
         <div className="bg-amber-50 p-8 rounded-3xl border border-amber-200/50 lg:col-span-1">
           <h3 className="text-xl font-bold mb-6 flex items-center gap-2 text-amber-700">
             <BookOpen size={24} />
-            運氣參考方藥
+            《三因方》運氣參考方藥
           </h3>
           <div className="space-y-6 font-sans">
             {/* 五運時氣方 */}
