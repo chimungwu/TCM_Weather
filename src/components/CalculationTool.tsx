@@ -441,7 +441,7 @@ export default function CalculationTool() {
         <div className="bg-amber-50 p-8 rounded-3xl border border-amber-200/50 lg:col-span-1">
           <h3 className="text-xl font-bold mb-6 flex items-center gap-2 text-amber-700">
             <BookOpen size={24} />
-            《三因方》十六政方
+            運氣參考方藥
           </h3>
           <div className="space-y-6 font-sans">
             {/* 五運時氣方 */}
@@ -465,11 +465,19 @@ export default function CalculationTool() {
                     {sanYinFang.stem.logic} 針對{year}年{daYunInfo.movement}運之局，調和五臟。
                   </p>
                 </div>
-                <div>
-                  <h5 className="text-xs font-bold text-ink/40 uppercase mb-2 tracking-wider">臨床加減</h5>
-                  <p className="text-sm text-ink/70 leading-relaxed italic font-serif">
-                    {sanYinFang.stem.mods}
-                  </p>
+                <div className="flex justify-between items-center">
+                  <div className="w-2/3">
+                    <h5 className="text-xs font-bold text-ink/40 uppercase mb-2 tracking-wider">臨床加減</h5>
+                    <p className="text-sm text-ink/70 leading-relaxed italic font-serif">
+                      {sanYinFang.stem.mods}
+                    </p>
+                  </div>
+                  <div className="w-1/3 text-right">
+                    <h5 className="text-xs font-bold text-ink/40 uppercase mb-2 tracking-wider">出處</h5>
+                    <p className="text-xs text-ink/60 font-bold font-sans">
+                      {sanYinFang.stem.source}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -495,17 +503,25 @@ export default function CalculationTool() {
                     {sanYinFang.branch.logic} 針對{stzq.siTian}司天之局，平調六氣。
                   </p>
                 </div>
-                <div>
-                  <h5 className="text-xs font-bold text-ink/40 uppercase mb-2 tracking-wider">臨床加減</h5>
-                  <p className="text-sm text-ink/70 leading-relaxed italic font-serif">
-                    {sanYinFang.branch.mods}
-                  </p>
+                <div className="flex justify-between items-center">
+                  <div className="w-2/3">
+                    <h5 className="text-xs font-bold text-ink/40 uppercase mb-2 tracking-wider">臨床加減</h5>
+                    <p className="text-sm text-ink/70 leading-relaxed italic font-serif">
+                      {sanYinFang.branch.mods}
+                    </p>
+                  </div>
+                  <div className="w-1/3 text-right">
+                    <h5 className="text-xs font-bold text-ink/40 uppercase mb-2 tracking-wider">出處</h5>
+                    <p className="text-xs text-ink/60 font-bold font-sans">
+                      {sanYinFang.branch.source}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
             
             <div className="p-4 bg-amber-100/50 rounded-xl border border-dashed border-amber-300 text-xs text-amber-800 leading-relaxed font-medium">
-              <strong>學術提示：</strong>十六政方旨在「以平為期」。需結合當令之「客主加臨」情況應用。
+              <strong>學術提示：</strong>運氣之學，五運以論歲之偏勝，六氣以察時之加臨，然臨證之際，不可偏執一端，當合而觀之，以調其過與不及。十六政方旨在「以平為期」，需結合當令之「客主加臨」情況應用。
             </div>
           </div>
         </div>

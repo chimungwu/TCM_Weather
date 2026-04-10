@@ -906,32 +906,32 @@ export const getMicroQiAnalysis = (year: number, stepIdx: number, daYun: string,
 };
 
 export const getSanYinFangGuidance = (stem: string, branch: string) => {
-  const stemFormulaMap: Record<string, { name: string; ingredients: string; logic: string; mods: string }> = {
-    '甲': { name: '附子山茱萸湯', ingredients: '附子、山茱萸、木瓜、熟地、乾薑、甘草', logic: '土運太過，濕氣盛。', mods: '濕腫腹瀉加蒼朮、茯苓；腎陽虛加肉桂。' },
-    '己': { name: '白朮厚朴湯', ingredients: '白朮、厚朴、茯苓、甘草、陳皮、生薑', logic: '土運不及，風木乘土。', mods: '食慾差加山楂、神曲；木克土（脅痛）加柴胡、白芍。' },
-    '丙': { name: '玄參升麻湯', ingredients: '玄參、升麻、犀角(可用水牛角代)、甘草、防風', logic: '水運太過，寒氣盛。', mods: '寒感重則減玄參、加乾薑；火鬱口瘡加黃連。' },
-    '辛': { name: '地黃明目丹', ingredients: '熟地、山藥、山茱萸、澤瀉、茯苓、丹皮', logic: '水運不及，燥金乘水。', mods: '眼乾加枸杞；陰虛火旺加知母、黃柏。' },
-    '戊': { name: '麥門冬湯', ingredients: '麥門冬、半夏、人參、甘草、粳米、大棗', logic: '火運太過，熱氣盛。', mods: '乾咳加川貝；心火旺加蓮子心、竹葉。' },
-    '癸': { name: '黃耆茯神湯', ingredients: '黃耆、茯神、遠志、甘草、茯苓、人參', logic: '火運不及，寒水乘火。', mods: '心悸失眠加酸棗仁；氣虛乏力加人參。' },
-    '庚': { name: '牛膝煎', ingredients: '牛膝、熟地、當歸、白芍、肉桂、杜仲', logic: '金運太過，燥氣盛。', mods: '關節僵硬加威靈仙；肺燥明顯加麥門冬。' },
-    '乙': { name: '紫菀湯', ingredients: '紫菀、款冬花、百部、桔梗、甘草、白前', logic: '金運不及，火熱乘金。', mods: '久咳加款冬花；易感冒加防風、黃耆。' },
-    '壬': { name: '苓朮湯', ingredients: '茯苓、白朮、厚朴、甘草、草豆蔻、生薑', logic: '木運太過，風氣盛。', mods: '肝氣逆加薄荷；腹痛急迫重用白芍。' },
-    '丁': { name: '備化湯', ingredients: '木瓜、茯苓、甘草、附子、乾薑、厚朴', logic: '木運不及，燥金乘木。', mods: '肝血虛加當歸、熟地；燥金侵襲加桑葉。' }
+  const stemFormulaMap: Record<string, { name: string; ingredients: string; logic: string; mods: string; source: string }> = {
+    '甲': { name: '附子山茱萸湯', ingredients: '附子、山茱萸、木瓜、熟地、乾薑、甘草', logic: '土運太過，濕氣盛。', mods: '濕腫腹瀉加蒼朮、茯苓；腎陽虛加肉桂。', source: '《三因極一病證方論》' },
+    '己': { name: '白朮厚朴湯', ingredients: '白朮、厚朴、茯苓、甘草、陳皮、生薑', logic: '土運不及，風木乘土。', mods: '食慾差加山楂、神曲；木克土（脅痛）加柴胡、白芍。', source: '《三因極一病證方論》' },
+    '丙': { name: '玄參升麻湯', ingredients: '玄參、升麻、犀角(可用水牛角代)、甘草、防風', logic: '水運太過，寒氣盛。', mods: '寒感重則減玄參、加乾薑；火鬱口瘡加黃連。', source: '臨床參考' },
+    '辛': { name: '地黃明目丹', ingredients: '熟地、山藥、山茱萸、澤瀉、茯苓、丹皮', logic: '水運不及，燥金乘水。', mods: '眼乾加枸杞；陰虛火旺加知母、黃柏。', source: '《三因極一病證方論》' },
+    '戊': { name: '麥門冬湯', ingredients: '麥門冬、半夏、人參、甘草、粳米、大棗', logic: '火運太過，熱氣盛。', mods: '乾咳加川貝；心火旺加蓮子心、竹葉。', source: '《金匱要略》' },
+    '癸': { name: '黃耆茯神湯', ingredients: '黃耆、茯神、遠志、甘草、茯苓、人參', logic: '火運不及，寒水乘火。', mods: '心悸失眠加酸棗仁；氣虛乏力加人參。', source: '《三因極一病證方論》' },
+    '庚': { name: '牛膝煎', ingredients: '牛膝、熟地、當歸、白芍、肉桂、杜仲', logic: '金運太過，燥氣盛。', mods: '關節僵硬加威靈仙；肺燥明顯加麥門冬。', source: '《三因極一病證方論》' },
+    '乙': { name: '紫菀湯', ingredients: '紫菀、款冬花、百部、桔梗、甘草、白前', logic: '金運不及，火熱乘金。', mods: '久咳加款冬花；易感冒加防風、黃耆。', source: '《三因極一病證方論》' },
+    '壬': { name: '苓朮湯', ingredients: '茯苓、白朮、厚朴、甘草、草豆蔻、生薑', logic: '木運太過，風氣盛。', mods: '肝氣逆加薄荷；腹痛急迫重用白芍。', source: '《三因極一病證方論》' },
+    '丁': { name: '備化湯', ingredients: '木瓜、茯苓、甘草、附子、乾薑、厚朴', logic: '木運不及，燥金乘木。', mods: '肝血虛加當歸、熟地；燥金侵襲加桑葉。', source: '《三因極一病證方論》' }
   };
 
-  const branchFormulaMap: Record<string, { name: string; ingredients: string; logic: string; mods: string }> = {
-    '子': { name: '備化湯', ingredients: '木瓜、茯苓、甘草、附子、乾薑、厚朴', logic: '少陰君火司天。', mods: '高熱傷津加石膏；心煩不寐加梔子。' },
-    '午': { name: '備化湯', ingredients: '木瓜、茯苓、甘草、附子、乾薑、厚朴', logic: '少陰君火司天。', mods: '高熱傷津加石膏；心煩不寐加梔子。' },
-    '丑': { name: '靜順湯', ingredients: '茯苓、茯神、甘草、乾薑、附子、牛膝、木瓜', logic: '太陰濕土司天。', mods: '下肢水腫加澤瀉；濕阻中焦加砂仁、豆蔻。' },
-    '未': { name: '靜順湯', ingredients: '茯苓、茯神、甘草、乾薑、附子、牛膝、木瓜', logic: '太陰濕土司天。', mods: '下肢水腫加澤瀉；濕阻中焦加砂仁、豆蔻。' },
-    '寅': { name: '審平湯', ingredients: '遠志、紫菀、天門冬、甘草、白芍、山茱萸', logic: '少陽相火司天。', mods: '咽喉劇痛加射干；熱入營血加生地、丹皮。' },
-    '申': { name: '審平湯', ingredients: '遠志、紫菀、天門冬、甘草、白芍、山茱萸', logic: '少陽相火司天。', mods: '咽喉劇痛加射干；熱入營血加生地、丹皮。' },
-    '卯': { name: '推陳湯', ingredients: '大黃、枳殼、厚朴、甘草、芒硝', logic: '陽明燥金司天。', mods: '大便秘結加大黃；皮膚乾癢加蟬蛻、荊芥。' },
-    '酉': { name: '推陳湯', ingredients: '大黃、枳殼、厚朴、甘草、芒硝', logic: '陽明燥金司天。', mods: '大便秘結加大黃；皮膚乾癢加蟬蛻、荊芥。' },
-    '辰': { name: '正安湯', ingredients: '羌活、獨活、防風、甘草、附子、乾薑', logic: '太陽寒水司天。', mods: '骨節痠痛加羌活、獨活；寒疝腹痛加吳茱萸。' },
-    '戌': { name: '正安湯', ingredients: '羌活、獨活、防風、甘草、附子、乾薑', logic: '太陽寒水司天。', mods: '骨節痠痛加羌活、獨活；寒疝腹痛加吳茱萸。' },
-    '巳': { name: '正陽湯', ingredients: '天麻、鉤藤、全蠍、白僵蠶、甘草', logic: '厥陰風木司天。', mods: '頭暈目眩加天麻、鉤藤；風動抽搐加全蠍。' },
-    '亥': { name: '正陽湯', ingredients: '天麻、鉤藤、全蠍、白僵蠶、甘草', logic: '厥陰風木司天。', mods: '頭暈目眩加天麻、鉤藤；風動抽搐加全蠍。' }
+  const branchFormulaMap: Record<string, { name: string; ingredients: string; logic: string; mods: string; source: string }> = {
+    '子': { name: '備化湯', ingredients: '木瓜、茯苓、甘草、附子、乾薑、厚朴', logic: '少陰君火司天。', mods: '高熱傷津加石膏；心煩不寐加梔子。', source: '《三因極一病證方論》' },
+    '午': { name: '備化湯', ingredients: '木瓜、茯苓、甘草、附子、乾薑、厚朴', logic: '少陰君火司天。', mods: '高熱傷津加石膏；心煩不寐加梔子。', source: '《三因極一病證方論》' },
+    '丑': { name: '靜順湯', ingredients: '茯苓、茯神、甘草、乾薑、附子、牛膝、木瓜', logic: '太陰濕土司天。', mods: '下肢水腫加澤瀉；濕阻中焦加砂仁、豆蔻。', source: '《三因極一病證方論》' },
+    '未': { name: '靜順湯', ingredients: '茯苓、茯神、甘草、乾薑、附子、牛膝、木瓜', logic: '太陰濕土司天。', mods: '下肢水腫加澤瀉；濕阻中焦加砂仁、豆蔻。', source: '《三因極一病證方論》' },
+    '寅': { name: '審平湯', ingredients: '遠志、紫菀、天門冬、甘草、白芍、山茱萸', logic: '少陽相火司天。', mods: '咽喉劇痛加射干；熱入營血加生地、丹皮。', source: '《三因極一病證方論》' },
+    '申': { name: '審平湯', ingredients: '遠志、紫菀、天門冬、甘草、白芍、山茱萸', logic: '少陽相火司天。', mods: '咽喉劇痛加射干；熱入營血加生地、丹皮。', source: '《三因極一病證方論》' },
+    '卯': { name: '推陳湯', ingredients: '大黃、枳殼、厚朴、甘草、芒硝', logic: '陽明燥金司天。', mods: '大便秘結加大黃；皮膚乾癢加蟬蛻、荊芥。', source: '《三因極一病證方論》' },
+    '酉': { name: '推陳湯', ingredients: '大黃、枳殼、厚朴、甘草、芒硝', logic: '陽明燥金司天。', mods: '大便秘結加大黃；皮膚乾癢加蟬蛻、荊芥。', source: '《三因極一病證方論》' },
+    '辰': { name: '正安湯', ingredients: '羌活、獨活、防風、甘草、附子、乾薑', logic: '太陽寒水司天。', mods: '骨節痠痛加羌活、獨活；寒疝腹痛加吳茱萸。', source: '《三因極一病證方論》' },
+    '戌': { name: '正安湯', ingredients: '羌活、獨活、防風、甘草、附子、乾薑', logic: '太陽寒水司天。', mods: '骨節痠痛加羌活、獨活；寒疝腹痛加吳茱萸。', source: '《三因極一病證方論》' },
+    '巳': { name: '正陽湯', ingredients: '天麻、鉤藤、全蠍、白僵蠶、甘草', logic: '厥陰風木司天。', mods: '頭暈目眩加天麻、鉤藤；風動抽搐加全蠍。', source: '《三因極一病證方論》' },
+    '亥': { name: '正陽湯', ingredients: '天麻、鉤藤、全蠍、白僵蠶、甘草', logic: '厥陰風木司天。', mods: '頭暈目眩加天麻、鉤藤；風動抽搐加全蠍。', source: '《三因極一病證方論》' }
   };
 
   return {
