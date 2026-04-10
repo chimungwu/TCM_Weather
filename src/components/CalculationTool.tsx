@@ -466,16 +466,10 @@ export default function CalculationTool() {
                   </p>
                 </div>
                 <div className="flex justify-between items-center">
-                  <div className="w-2/3">
+                  <div className="w-full">
                     <h5 className="text-xs font-bold text-ink/40 uppercase mb-2 tracking-wider">臨床加減</h5>
                     <p className="text-sm text-ink/70 leading-relaxed italic font-serif">
                       {sanYinFang.stem.mods}
-                    </p>
-                  </div>
-                  <div className="w-1/3 text-right">
-                    <h5 className="text-xs font-bold text-ink/40 uppercase mb-2 tracking-wider">出處</h5>
-                    <p className="text-xs text-ink/60 font-bold font-sans">
-                      {sanYinFang.stem.source}
                     </p>
                   </div>
                 </div>
@@ -504,16 +498,10 @@ export default function CalculationTool() {
                   </p>
                 </div>
                 <div className="flex justify-between items-center">
-                  <div className="w-2/3">
+                  <div className="w-full">
                     <h5 className="text-xs font-bold text-ink/40 uppercase mb-2 tracking-wider">臨床加減</h5>
                     <p className="text-sm text-ink/70 leading-relaxed italic font-serif">
                       {sanYinFang.branch.mods}
-                    </p>
-                  </div>
-                  <div className="w-1/3 text-right">
-                    <h5 className="text-xs font-bold text-ink/40 uppercase mb-2 tracking-wider">出處</h5>
-                    <p className="text-xs text-ink/60 font-bold font-sans">
-                      {sanYinFang.branch.source}
                     </p>
                   </div>
                 </div>
