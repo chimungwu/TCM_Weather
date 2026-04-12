@@ -68,6 +68,31 @@ export default function TheorySection() {
         </div>
       </section>
 
+      {/* Current Time and BaZi Info */}
+      <section className="bg-parchment p-8 rounded-3xl border border-ink/10 shadow-sm">
+        <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+          <Sun className="text-amber-600" /> 當前時間與節氣資訊
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-sans">
+          <div className="p-4 bg-white/50 rounded-xl border border-ink/5">
+            <div className="text-sm text-ink/60 mb-1">當前時間</div>
+            <div className="text-lg font-bold text-ink">2026年4月12日 07:14</div>
+          </div>
+          <div className="p-4 bg-white/50 rounded-xl border border-ink/5">
+            <div className="text-sm text-ink/60 mb-1">四柱八字</div>
+            <div className="text-lg font-bold text-ink">丙午年 壬辰月 丙午日 壬辰時</div>
+          </div>
+          <div className="p-4 bg-white/50 rounded-xl border border-ink/5">
+            <div className="text-sm text-ink/60 mb-1">目前節氣</div>
+            <div className="text-lg font-bold text-ink">清明 (至 4月20日 04:13)</div>
+          </div>
+          <div className="p-4 bg-white/50 rounded-xl border border-ink/5">
+            <div className="text-sm text-ink/60 mb-1">下一個節氣</div>
+            <div className="text-lg font-bold text-ink">穀雨 (4月20日 04:13 交會)</div>
+          </div>
+        </div>
+      </section>
+
       {/* New Section: Foundation of Calculation */}
       <section className="space-y-8">
         <div className="flex items-center gap-4 border-l-4 border-amber-600 pl-6">
@@ -308,6 +333,69 @@ export default function TheorySection() {
                 <div className="text-base text-ink/80 font-sans leading-relaxed">司天與在泉之間的四個過渡階段。</div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* New Section: 24 Solar Terms and Six Qi */}
+      <section className="space-y-8">
+        <div className="flex items-center gap-4 border-l-4 border-amber-600 pl-6">
+          <div>
+            <h3 className="text-2xl font-bold">節氣與運氣：時間與氣候的對應</h3>
+            <p className="text-ink/50 font-sans">24節氣是運氣學說中劃分六步氣候的時間基準</p>
+          </div>
+        </div>
+
+        <div className="bg-parchment p-8 rounded-3xl border border-ink/10 shadow-sm">
+          <p className="text-sm text-ink/70 font-sans mb-8 leading-relaxed">
+            24節氣反映了太陽運行對地球氣候的影響，運氣學說將其作為劃分「六步氣候」（初之氣至終之氣）的時間節點。每個氣候階段涵蓋 4 個節氣，形成一個完整的年度氣候循環。
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 font-sans mb-8">
+            {[
+              { season: '春季', terms: ['立春', '雨水', '驚蟄', '春分', '清明', '穀雨'] },
+              { season: '夏季', terms: ['立夏', '小滿', '芒種', '夏至', '小暑', '大暑'] },
+              { season: '秋季', terms: ['立秋', '處暑', '白露', '秋分', '寒露', '霜降'] },
+              { season: '冬季', terms: ['立冬', '小雪', '大雪', '冬至', '小寒', '大寒'] },
+            ].map((season, i) => (
+              <div key={i} className="bg-white/50 p-6 rounded-2xl border border-ink/5">
+                <h4 className="font-bold text-lg text-ink mb-4">{season.season}</h4>
+                <div className="grid grid-cols-2 gap-2">
+                  {season.terms.map((term, j) => (
+                    <div key={j} className="text-sm text-ink/70 p-2 bg-white rounded-lg border border-ink/5 text-center">
+                      {term}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse font-sans">
+              <thead>
+                <tr className="border-b border-ink/10 text-xs uppercase tracking-wider text-ink/50">
+                  <th className="py-3 font-bold">六步氣候</th>
+                  <th className="py-3 font-bold">對應節氣</th>
+                  <th className="py-3 font-bold">氣候基調</th>
+                </tr>
+              </thead>
+              <tbody className="text-sm">
+                {[
+                  { step: '初之氣', terms: '大寒、立春、雨水、驚蟄', qi: '厥陰風木' },
+                  { step: '二之氣', terms: '春分、清明、穀雨、立夏', qi: '少陰君火' },
+                  { step: '三之氣', terms: '小滿、芒種、夏至、小暑', qi: '少陽相火' },
+                  { step: '四之氣', terms: '大暑、立秋、處暑、白露', qi: '太陰濕土' },
+                  { step: '五之氣', terms: '秋分、寒露、霜降、立冬', qi: '陽明燥金' },
+                  { step: '終之氣', terms: '小雪、大雪、冬至、小寒', qi: '太陽寒水' },
+                ].map((item, i) => (
+                  <tr key={i} className="border-b border-ink/5 hover:bg-ink/5 transition-colors">
+                    <td className="py-4 font-bold text-ink">{item.step}</td>
+                    <td className="py-4 text-ink/80">{item.terms}</td>
+                    <td className="py-4 text-cinnabar font-bold">{item.qi}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
