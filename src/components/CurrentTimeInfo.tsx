@@ -103,14 +103,14 @@ export default function CurrentTimeInfo() {
       {/* Liuqi Progress Bar */}
       <div className="p-4 bg-teal-50 rounded-xl border border-teal-200 shadow-inner">
         <div className="flex justify-between items-center mb-2">
-          <div className="flex items-center gap-2 font-bold text-teal-800">
-            <Wind size={18} />
-            {currentStep.name}：{currentStep.attribute}
-            <span className="text-xs font-normal text-teal-700/80">
+          <div className="flex items-center gap-2 font-bold text-ink">
+            <Wind size={18} className="text-teal-800" />
+            <span className="text-lg">{currentStep.name}：{currentStep.attribute}</span>
+            <span className="text-sm font-normal text-ink/60">
               （{formatDateRange(currentStep.startTs, nextStep.startTs)}，涵蓋：{currentStep.coveredTerms.join('、')}）
             </span>
           </div>
-          <span className="text-xs font-bold text-teal-800">{progress.toFixed(1)}%</span>
+          <span className="text-lg font-bold text-ink">{progress.toFixed(1)}%</span>
         </div>
         <div className="w-full bg-teal-100 rounded-full h-2">
           <div 
