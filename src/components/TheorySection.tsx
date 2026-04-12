@@ -20,6 +20,7 @@ import {
 export default function TheorySection() {
   return (
     <div className="space-y-16 pb-20">
+
       {/* Hero Section */}
       <section className="text-center max-w-3xl mx-auto">
         <motion.div
@@ -33,6 +34,31 @@ export default function TheorySection() {
         <p className="text-lg leading-relaxed font-sans text-ink/70">
           五運六氣（簡稱「運氣」）是中醫預測氣候與疾病的核心理論。它將宇宙大氣的「能量屬性」與「氣候特徵」結合，揭示天人合一的律動。
         </p>
+      </section>
+
+      {/* Current Time and BaZi Info */}
+      <section className="bg-parchment p-8 rounded-3xl border border-ink/10 shadow-sm">
+        <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+          <Sun className="text-amber-600" /> 當前時間與節氣資訊
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-sans">
+          <div className="p-4 bg-white/50 rounded-xl border border-ink/5">
+            <div className="text-sm text-ink/60 mb-1">當前時間</div>
+            <div className="text-lg font-bold text-ink">2026年4月12日 07:14</div>
+          </div>
+          <div className="p-4 bg-white/50 rounded-xl border border-ink/5">
+            <div className="text-sm text-ink/60 mb-1">四柱八字</div>
+            <div className="text-lg font-bold text-ink">丙午年 壬辰月 丙午日 壬辰時</div>
+          </div>
+          <div className="p-4 bg-white/50 rounded-xl border border-ink/5">
+            <div className="text-sm text-ink/60 mb-1">目前節氣</div>
+            <div className="text-lg font-bold text-ink">清明 (至 4月20日 04:13)</div>
+          </div>
+          <div className="p-4 bg-white/50 rounded-xl border border-ink/5">
+            <div className="text-sm text-ink/60 mb-1">下一個節氣</div>
+            <div className="text-lg font-bold text-ink">穀雨 (4月20日 04:13 交會)</div>
+          </div>
+        </div>
       </section>
 
       {/* New Section: Core Logic */}
@@ -68,30 +94,6 @@ export default function TheorySection() {
         </div>
       </section>
 
-      {/* Current Time and BaZi Info */}
-      <section className="bg-parchment p-8 rounded-3xl border border-ink/10 shadow-sm">
-        <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-          <Sun className="text-amber-600" /> 當前時間與節氣資訊
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-sans">
-          <div className="p-4 bg-white/50 rounded-xl border border-ink/5">
-            <div className="text-sm text-ink/60 mb-1">當前時間</div>
-            <div className="text-lg font-bold text-ink">2026年4月12日 07:14</div>
-          </div>
-          <div className="p-4 bg-white/50 rounded-xl border border-ink/5">
-            <div className="text-sm text-ink/60 mb-1">四柱八字</div>
-            <div className="text-lg font-bold text-ink">丙午年 壬辰月 丙午日 壬辰時</div>
-          </div>
-          <div className="p-4 bg-white/50 rounded-xl border border-ink/5">
-            <div className="text-sm text-ink/60 mb-1">目前節氣</div>
-            <div className="text-lg font-bold text-ink">清明 (至 4月20日 04:13)</div>
-          </div>
-          <div className="p-4 bg-white/50 rounded-xl border border-ink/5">
-            <div className="text-sm text-ink/60 mb-1">下一個節氣</div>
-            <div className="text-lg font-bold text-ink">穀雨 (4月20日 04:13 交會)</div>
-          </div>
-        </div>
-      </section>
 
       {/* New Section: Foundation of Calculation */}
       <section className="space-y-8">
@@ -117,7 +119,7 @@ export default function TheorySection() {
               <div className="text-[10px] uppercase tracking-widest font-bold text-cinnabar/60 mb-2 flex items-center gap-1">
                 <Scroll size={12} /> 化運口訣
               </div>
-              <p className="text-lg font-bold leading-relaxed tracking-widest text-ink/90">
+              <p className="text-xl font-bold leading-relaxed tracking-widest text-ink/90">
                 甲己化土乙庚金，<br/>
                 丙辛化水丁壬木，<br/>
                 戊癸化火十天干
@@ -157,7 +159,7 @@ export default function TheorySection() {
               <div className="text-[10px] uppercase tracking-widest font-bold text-jade/60 mb-2 flex items-center gap-1">
                 <Scroll size={12} /> 司天口訣
               </div>
-              <div className="text-sm font-bold leading-relaxed tracking-widest text-ink/90 space-y-1">
+              <div className="text-xl font-bold leading-relaxed tracking-widest text-ink/90 space-y-1">
                 <p>子午少陰君火心，丑未太陰濕土臨</p>
                 <p>寅申少陽相火旺，卯酉陽明燥金尋</p>
                 <p>辰戌太陽寒水主，巳亥厥陰風木行</p>
