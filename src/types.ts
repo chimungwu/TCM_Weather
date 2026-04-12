@@ -120,14 +120,19 @@ export const getSolarTermDate = (year: number, term: string): string => {
   
   // Basic formula: Day = (Year % 100 * 0.2422 + BaseDay) - Int(Year % 100 / 4)
   const y = year % 100;
-  const day = Math.floor((y * 0.2422 + config.baseDay) - Math.floor(y / 4));
+  const rawValue = (y * 0.2422 + config.baseDay) - Math.floor(y / 4);
+  const day = Math.floor(rawValue);
+  const fractionalDay = rawValue - day;
+  
+  const hours = Math.floor(fractionalDay * 24);
+  const minutes = Math.floor((fractionalDay * 24 - hours) * 60);
   
   const monthMapping: Record<string, number> = {
     '大寒': 1, '立春': 2, '春分': 3, '立夏': 5, '小滿': 5, '大暑': 7, '立秋': 8, '秋分': 9, '立冬': 11, '小雪': 11, '冬至': 12
   };
   
   const month = monthMapping[term];
-  return `${month}月${day}日`;
+  return `${month}月${day}日 ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 };
 
 export const getYearlySteps = (year: number) => {
