@@ -16,6 +16,8 @@ import {
   HeartPulse,
   LibraryBig
 } from "lucide-react";
+import React from 'react';
+import { motion } from 'motion/react';
 import CurrentTimeInfo from './CurrentTimeInfo';
 
 export default function TheorySection() {
