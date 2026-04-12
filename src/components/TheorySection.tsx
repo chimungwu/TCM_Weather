@@ -16,6 +16,7 @@ import {
   HeartPulse,
   LibraryBig
 } from "lucide-react";
+import CurrentTimeInfo from './CurrentTimeInfo';
 
 export default function TheorySection() {
   return (
@@ -36,30 +37,7 @@ export default function TheorySection() {
         </p>
       </section>
 
-      {/* Current Time and BaZi Info */}
-      <section className="bg-parchment p-8 rounded-3xl border border-ink/10 shadow-sm">
-        <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-          <Sun className="text-amber-600" /> 當前時間與節氣資訊
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-sans">
-          <div className="p-4 bg-white/50 rounded-xl border border-ink/5">
-            <div className="text-sm text-ink/60 mb-1">當前時間</div>
-            <div className="text-lg font-bold text-ink">2026年4月12日 07:14</div>
-          </div>
-          <div className="p-4 bg-white/50 rounded-xl border border-ink/5">
-            <div className="text-sm text-ink/60 mb-1">四柱八字</div>
-            <div className="text-lg font-bold text-ink">丙午年 壬辰月 丙午日 壬辰時</div>
-          </div>
-          <div className="p-4 bg-white/50 rounded-xl border border-ink/5">
-            <div className="text-sm text-ink/60 mb-1">目前節氣</div>
-            <div className="text-lg font-bold text-ink">清明 (至 4月20日 04:13)</div>
-          </div>
-          <div className="p-4 bg-white/50 rounded-xl border border-ink/5">
-            <div className="text-sm text-ink/60 mb-1">下一個節氣</div>
-            <div className="text-lg font-bold text-ink">穀雨 (4月20日 04:13 交會)</div>
-          </div>
-        </div>
-      </section>
+      <CurrentTimeInfo />
 
       {/* New Section: Core Logic */}
       <section className="bg-parchment text-ink p-10 rounded-[3rem] shadow-xl border border-ink/5">
