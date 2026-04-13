@@ -14,7 +14,30 @@ export default function CurrentTimeInfo() {
   }, []);
 
   const lunar = Lunar.fromDate(now);
-  const bazi = lunar.getBaZi();
+  
+  // Custom Bazi logic: Zi hour (23:00-01:00)
+  // Late Zi (23:00-00:00): Previous day's day pillar
+  // Early Zi (00:00-01:00): Current day's day pillar
+  let baziDate = now;
+  if (now.getHours() >= 23) {
+      baziDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
+  }
+  const lunarForBazi = Lunar.fromDate(baziDate);
+  const bazi = lunarForBazi.getBaZi();
+
+  // Manually fix hour pillar for Zi hour (23:00-01:00)
+  const hour = now.getHours();
+  if (hour >= 23 || hour < 1) {
+    const dayGan = bazi[2].charAt(0);
+    const ziHourGan = {
+      '甲': '甲', '己': '甲',
+      '乙': '丙', '庚': '丙',
+      '丙': '戊', '辛': '戊',
+      '丁': '庚', '壬': '庚',
+      '戊': '壬', '癸': '壬'
+    }[dayGan] || '甲';
+    bazi[3] = ziHourGan + '子';
+  }
   
   const { currentTerm, nextTerm } = getCurrentAndNextSolarTerm(now);
 
